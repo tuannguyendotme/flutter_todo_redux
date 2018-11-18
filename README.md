@@ -1,10 +1,10 @@
-# Flutter Todo
+# Flutter Todo Redux
 
-Yet another Todo app, now using Flutter.
+Yet another Todo app, now using Flutter with Redux.
 
 ## Getting Started
 
-This Todo app is implemented using Flutter (with Scoped Model for state management) and Firebase.
+This is re-implementation of [Flutter Todo app](https://github.com/tuannguyendotme/flutter_todo) but using Redux instead of ScopedModel.
 
 Features:
 
