@@ -1,32 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_todo/models/filter.dart';
 
-import 'package:scoped_model/scoped_model.dart';
-
-import 'package:flutter_todo/scoped_models/app_model.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/widgets/todo/todo_card.dart';
 
 class TodoListView extends StatelessWidget {
-  Widget _buildEmptyText(AppModel model) {
-    String emptyText;
+  final List<Todo> todos;
 
-    switch (model.filter) {
-      case Filter.All:
-        emptyText = 'This is boring here. \r\nCreate a todo to make it crowd.';
-        break;
+  TodoListView(this.todos);
 
-      case Filter.Done:
-        emptyText =
-            'This is boring here. \r\nCreate a Done todo to make it crowd.';
-        break;
-
-      case Filter.NotDone:
-        emptyText =
-            'This is boring here. \r\nCreate a Not Done todo to make it crowd.';
-        break;
-    }
+  Widget _buildEmptyText() {
+    String emptyText =
+        'This is boring here. \r\nCreate a Not Done todo to make it crowd.';
 
     Widget svg = new SvgPicture.asset(
       'assets/todo_list.svg',
@@ -55,17 +40,15 @@ class TodoListView extends StatelessWidget {
     );
   }
 
-  Widget _buildListView(AppModel model) {
+  Widget _buildListView() {
     return ListView.builder(
-      itemCount: model.todos.length,
+      itemCount: this.todos.length,
       itemBuilder: (BuildContext context, int index) {
-        Todo todo = model.todos[index];
+        Todo todo = this.todos[index];
 
         return Dismissible(
           key: Key(todo.id),
-          onDismissed: (DismissDirection direction) {
-            model.removeTodo(todo.id);
-          },
+          onDismissed: (DismissDirection direction) {},
           child: TodoCard(todo),
           background: Container(color: Colors.red),
         );
@@ -75,14 +58,9 @@ class TodoListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<AppModel>(
-      builder: (BuildContext context, Widget child, AppModel model) {
-        Widget todoCards = model.todos.length > 0
-            ? _buildListView(model)
-            : _buildEmptyText(model);
+    Widget todoCards =
+        this.todos.length > 0 ? _buildListView() : _buildEmptyText();
 
-        return todoCards;
-      },
-    );
+    return todoCards;
   }
 }

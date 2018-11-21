@@ -8,4 +8,14 @@ class Settings {
     @required this.isShortcutsEnabled,
     @required this.isDarkThemeUsed,
   });
+
+  Settings copyWith({
+    bool isShortcutsEnabled,
+    bool isDarkThemeUsed,
+  }) {
+    return Settings(
+      isShortcutsEnabled: isShortcutsEnabled ?? this.isShortcutsEnabled,
+      isDarkThemeUsed: isDarkThemeUsed ?? this.isDarkThemeUsed,
+    );
+  }
 }
