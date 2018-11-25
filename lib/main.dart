@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/redux/actions/todos_actions.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -8,10 +7,12 @@ import 'package:flutter_todo/.env.dart';
 
 import 'package:flutter_todo/models/app_state.dart';
 
+import 'package:flutter_todo/redux/actions/todos_actions.dart';
 import 'package:flutter_todo/redux/reducers/app_reducer.dart';
 import 'package:flutter_todo/redux/middlewares/todos_middleware.dart';
 
 import 'package:flutter_todo/pages/todo/todo_list_page.dart';
+import 'package:flutter_todo/pages/todo/todo_editor_page.dart';
 
 void main() {
   runApp(TodoApp());
@@ -42,6 +43,7 @@ class TodoApp extends StatelessWidget {
                   return TodoListPage();
                 },
               ),
+          '/editor': (BuildContext context) => TodoEditorPage(null),
         },
       ),
     );

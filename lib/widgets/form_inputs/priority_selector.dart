@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:flutter_todo/models/priority.dart';
+import 'package:flutter_todo/typedefs.dart';
 import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
 
 class PrioritySelector extends StatefulWidget {
-  final Function setPriority;
+  final OnPrioritySelected selectPriority;
   final Priority priority;
 
-  PrioritySelector(this.priority, this.setPriority);
+  PrioritySelector(this.priority, this.selectPriority);
 
   @override
   State<StatefulWidget> createState() {
@@ -41,7 +42,7 @@ class _PrioritySelectorState extends State<PrioritySelector> {
               _priority = p;
             });
 
-            widget.setPriority(_priority);
+            widget.selectPriority(_priority);
           },
         ),
       ));

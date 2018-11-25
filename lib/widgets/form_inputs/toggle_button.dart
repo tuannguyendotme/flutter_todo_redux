@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_todo/typedefs.dart';
+
 class ToggleButton extends StatefulWidget {
   final bool selected;
-  final Function toggle;
+  final OnToggled toggle;
 
   ToggleButton(this.selected, this.toggle);
 

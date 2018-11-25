@@ -4,8 +4,10 @@ import 'package:flutter_todo/redux/actions/todos_actions.dart';
 
 final loadingReducer = combineReducers<bool>([
   TypedReducer<bool, TodosLoadedAction>(_setLoadingFalse),
-  TypedReducer<bool, AddTodoAction>(_setLoadingTrue),
-  TypedReducer<bool, TodoAddedAction>(_setLoadingFalse),
+  TypedReducer<bool, TodosNotLoadedAction>(_setLoadingFalse),
+  TypedReducer<bool, CreateTodoAction>(_setLoadingTrue),
+  TypedReducer<bool, TodoCreatedAction>(_setLoadingFalse),
+  TypedReducer<bool, TodoNotCreatedAction>(_setLoadingFalse),
   TypedReducer<bool, UpdateTodoAction>(_setLoadingTrue),
   TypedReducer<bool, TodoUpdatedAction>(_setLoadingFalse),
   TypedReducer<bool, DeleteTodoAction>(_setLoadingTrue),

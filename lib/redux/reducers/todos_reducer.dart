@@ -5,7 +5,7 @@ import 'package:flutter_todo/redux/actions/todos_actions.dart';
 
 final todosReducer = combineReducers<List<Todo>>([
   TypedReducer<List<Todo>, TodosLoadedAction>(_setTodos),
-  TypedReducer<List<Todo>, AddTodoAction>(_addTodo),
+  TypedReducer<List<Todo>, TodoCreatedAction>(_addTodo),
   TypedReducer<List<Todo>, UpdateTodoAction>(_updateTodo),
   TypedReducer<List<Todo>, DeleteTodoAction>(_deleteTodo),
   TypedReducer<List<Todo>, ToggleTodoDoneAction>(_toggleTodoStatus),
@@ -17,7 +17,7 @@ List<Todo> _setTodos(List<Todo> todos, TodosLoadedAction action) {
   return action.todos;
 }
 
-List<Todo> _addTodo(List<Todo> todos, AddTodoAction action) {
+List<Todo> _addTodo(List<Todo> todos, TodoCreatedAction action) {
   return List.from(todos)..add(action.todo);
 }
 

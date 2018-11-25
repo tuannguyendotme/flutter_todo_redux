@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/.env.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/todo.dart';
-
 import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
 import 'package:flutter_todo/widgets/todo/todo_list_view.dart';
 
@@ -14,7 +13,7 @@ class TodoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-      converter: (store) => _ViewModel.fromStore(store),
+      converter: (store) => _ViewModel.from(store),
       builder: (context, vm) {
         Stack stack = Stack(
           children: <Widget>[
@@ -22,7 +21,7 @@ class TodoListPage extends StatelessWidget {
           ],
         );
 
-        if (vm.loading) {
+        if (vm.isLoading) {
           stack.children.add(LoadingModal());
         }
 
@@ -80,17 +79,17 @@ class TodoListPage extends StatelessWidget {
 
 class _ViewModel {
   final List<Todo> todos;
-  final bool loading;
+  final bool isLoading;
 
   _ViewModel({
     @required this.todos,
-    @required this.loading,
+    @required this.isLoading,
   });
 
-  static _ViewModel fromStore(Store<AppState> store) {
+  factory _ViewModel.from(Store<AppState> store) {
     return _ViewModel(
       todos: store.state.todos,
-      loading: store.state.isLoading,
+      isLoading: store.state.isLoading,
     );
   }
 }

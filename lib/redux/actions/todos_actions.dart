@@ -1,3 +1,5 @@
+import 'package:flutter_todo/typedefs.dart';
+import 'package:flutter_todo/models/priority.dart';
 import 'package:flutter_todo/models/todo.dart';
 
 class LoadTodosAction {}
@@ -8,18 +10,46 @@ class TodosLoadedAction {
   TodosLoadedAction(this.todos);
 }
 
-class AddTodoAction {
-  final Todo todo;
+class TodosNotLoadedAction {}
 
-  AddTodoAction(this.todo);
+class CreateTodoAction {
+  final String title;
+  final String content;
+  final Priority priority;
+  final bool isDone;
+  final String userId;
+  final OnSuccess onSuccess;
+  final OnError onError;
+
+  CreateTodoAction(
+    this.title,
+    this.content,
+    this.priority,
+    this.isDone,
+    this.userId,
+    this.onSuccess,
+    this.onError,
+  );
 }
 
-class TodoAddedAction {}
+class TodoCreatedAction {
+  final Todo todo;
+
+  TodoCreatedAction(this.todo);
+}
+
+class TodoNotCreatedAction {}
 
 class UpdateTodoAction {
   final Todo todo;
+  final OnSuccess onSuccess;
+  final OnError onError;
 
-  UpdateTodoAction(this.todo);
+  UpdateTodoAction(
+    this.todo,
+    this.onSuccess,
+    this.onError,
+  );
 }
 
 class TodoUpdatedAction {}

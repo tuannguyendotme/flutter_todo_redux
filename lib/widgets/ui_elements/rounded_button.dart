@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_todo/typedefs.dart';
+
 class RoundedButton extends StatelessWidget {
   final String label;
   final Icon icon;
-  final Function onPressed;
+  final OnPressed onPressed;
 
   RoundedButton({
     this.icon,

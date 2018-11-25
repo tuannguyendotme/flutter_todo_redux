@@ -8,13 +8,14 @@ import 'package:flutter_todo/redux/actions/todos_actions.dart';
 
 List<Middleware<AppState>> createTodosMiddleware() {
   return [
-    TypedMiddleware<AppState, LoadTodosAction>(_setTodos),
+    TypedMiddleware<AppState, LoadTodosAction>(_loadTodos),
+    TypedMiddleware<AppState, CreateTodoAction>(_createTodo),
   ];
 }
 
-Future _setTodos(
+Future _loadTodos(
     Store<AppState> store, LoadTodosAction action, NextDispatcher next) async {
-  print('_setTodos - Middleware');
+  print('_loadTodos - Middleware');
 
   final todos = await Future.delayed(
       Duration(seconds: 3),
@@ -29,6 +30,31 @@ Future _setTodos(
   store.dispatch(TodosLoadedAction(todos));
 
   next(action);
+}
+
+Future _createTodo(
+    Store<AppState> store, CreateTodoAction action, NextDispatcher next) async {
+  print('_createTodo - Middleware');
+
+  next(action);
+
+  final todo = await Future.delayed(
+    Duration(seconds: 3),
+    () => Todo(
+          id: '6',
+          title: action.title,
+          content: action.content,
+          priority: action.priority,
+          isDone: action.isDone,
+          userId: action.userId,
+        ),
+  );
+
+  store.dispatch(TodoCreatedAction(todo));
+  action.onSuccess();
+
+  // action.onError();
+  // store.dispatch(TodoNotCreatedAction());
 }
 
 // List<Middleware<AppState>> createTodosMiddleware() {

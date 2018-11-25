@@ -1,202 +1,91 @@
 import 'package:flutter/material.dart';
 
-import 'package:scoped_model/scoped_model.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:flutter_todo/.env.dart';
+import 'package:flutter_todo/typedefs.dart';
+import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/models/priority.dart';
-import 'package:flutter_todo/scoped_models/app_model.dart';
-import 'package:flutter_todo/widgets/helpers/message_dialog.dart';
-import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
+import 'package:flutter_todo/redux/actions/todos_actions.dart';
 import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
-import 'package:flutter_todo/widgets/form_inputs/toggle_button.dart';
-import 'package:flutter_todo/widgets/form_inputs/priority_selector.dart';
+import 'package:flutter_todo/widgets/todo/todo_editor.dart';
 
-class TodoEditorPage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _TodoEditorPageState();
-  }
-}
+class TodoEditorPage extends StatelessWidget {
+  final String id;
 
-class _TodoEditorPageState extends State<TodoEditorPage> {
-  final Map<String, dynamic> _formData = {
-    'title': null,
-    'content': null,
-    'priority': Priority.Low,
-    'isDone': false
-  };
-
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  _selectPriority(Priority priority) {
-    _formData['priority'] = priority;
-  }
-
-  _toggleDone(bool isDone) {
-    _formData['isDone'] = isDone;
-  }
-
-  Widget _buildAppBar(AppModel model) {
-    return AppBar(
-      title: Text(Configure.AppName),
-      backgroundColor: Colors.blue,
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.lock),
-          onPressed: () async {
-            bool confirm = await ConfirmDialog.show(context);
-
-            if (confirm) {
-              Navigator.pop(context);
-
-              model.logout();
-            }
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildFloatingActionButton(AppModel model) {
-    return FloatingActionButton(
-      child: Icon(Icons.save),
-      onPressed: () {
-        if (!_formKey.currentState.validate()) {
-          return;
-        }
-
-        _formKey.currentState.save();
-
-        if (model.currentTodo != null && model.currentTodo.id != null) {
-          model
-              .updateTodo(
-            _formData['title'],
-            _formData['content'],
-            _formData['priority'],
-            _formData['isDone'],
-          )
-              .then((bool success) {
-            if (success) {
-              model.setCurrentTodo(null);
-
-              Navigator.pop(context);
-            } else {
-              MessageDialog.show(context);
-            }
-          });
-        } else {
-          model
-              .createTodo(
-            _formData['title'],
-            _formData['content'],
-            _formData['priority'],
-            _formData['isDone'],
-          )
-              .then((bool success) {
-            if (success) {
-              Navigator.pop(context);
-            } else {
-              MessageDialog.show(context);
-            }
-          });
-        }
-      },
-    );
-  }
-
-  Widget _buildTitleField(Todo todo) {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Title'),
-      initialValue: todo != null ? todo.title : '',
-      validator: (value) {
-        if (value.isEmpty) {
-          return 'Please enter todo\'s title';
-        }
-      },
-      onSaved: (value) {
-        _formData['title'] = value;
-      },
-    );
-  }
-
-  Widget _buildContentField(Todo todo) {
-    return TextFormField(
-      decoration: InputDecoration(labelText: 'Content'),
-      initialValue: todo != null ? todo.content : '',
-      maxLines: 5,
-      onSaved: (value) {
-        _formData['content'] = value;
-      },
-    );
-  }
-
-  Widget _buildOthers(Todo todo) {
-    bool isDone = todo != null && todo.isDone;
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        ToggleButton(isDone, _toggleDone),
-        PrioritySelector(
-          todo != null ? todo.priority : Priority.Low,
-          _selectPriority,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildForm(AppModel model) {
-    Todo todo = model.currentTodo;
-
-    _formData['title'] = todo != null ? todo.title : null;
-    _formData['content'] = todo != null ? todo.content : null;
-    _formData['priority'] = todo != null ? todo.priority : Priority.Low;
-    _formData['isDone'] = todo != null ? todo.isDone : false;
-
-    return Form(
-      key: _formKey,
-      child: ListView(
-        children: <Widget>[
-          _buildTitleField(todo),
-          _buildContentField(todo),
-          SizedBox(
-            height: 12.0,
-          ),
-          _buildOthers(todo),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildPageContent(AppModel model) {
-    return Scaffold(
-      appBar: _buildAppBar(model),
-      floatingActionButton: _buildFloatingActionButton(model),
-      body: Container(
-        padding: EdgeInsets.all(10.0),
-        child: Center(
-          child: _buildForm(model),
-        ),
-      ),
-    );
-  }
+  TodoEditorPage(this.id);
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<AppModel>(
-      builder: (BuildContext context, Widget child, AppModel model) {
-        Stack mainStack = Stack(
+    return StoreConnector<AppState, _ViewModel>(
+      converter: (store) => _ViewModel.from(store, this.id),
+      builder: (context, vm) {
+        Stack stack = Stack(
           children: <Widget>[
-            _buildPageContent(model),
+            TodoEditor(vm.todo, vm.onCreate, vm.onUpdate),
           ],
         );
 
-        if (model.isLoading) {
-          mainStack.children.add(LoadingModal());
+        if (vm.isLoading) {
+          stack.children.add(LoadingModal());
         }
 
-        return mainStack;
+        return stack;
+      },
+    );
+  }
+}
+
+class _ViewModel {
+  final Todo todo;
+  final bool isLoading;
+  final OnCreateTodo onCreate;
+  final OnUpdateTodo onUpdate;
+
+  _ViewModel({
+    @required this.todo,
+    @required this.isLoading,
+    @required this.onCreate,
+    @required this.onUpdate,
+  });
+
+  factory _ViewModel.from(Store<AppState> store, String id) {
+    final Todo todo = id != null
+        ? store.state.todos.where((todo) => todo.id == id).first
+        : null;
+
+    return _ViewModel(
+      todo: todo,
+      isLoading: store.state.isLoading,
+      onCreate: (
+        String title,
+        String content,
+        Priority priority,
+        bool isDone,
+        OnSuccess onSuccess,
+        OnError onError,
+      ) {
+        store.dispatch(CreateTodoAction(
+          title,
+          content,
+          priority,
+          isDone,
+          'userId',
+          onSuccess,
+          onError,
+        ));
+      },
+      onUpdate: (
+        todo,
+        OnSuccess onSuccess,
+        OnError onError,
+      ) {
+        store.dispatch(UpdateTodoAction(
+          todo,
+          onSuccess,
+          onError,
+        ));
       },
     );
   }
