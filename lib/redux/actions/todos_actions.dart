@@ -52,7 +52,13 @@ class UpdateTodoAction {
   );
 }
 
-class TodoUpdatedAction {}
+class TodoUpdatedAction {
+  final Todo todo;
+
+  TodoUpdatedAction(this.todo);
+}
+
+class TodoNotUpdatedAction {}
 
 class DeleteTodoAction {
   final String id;

@@ -30,22 +30,36 @@ class TodoApp extends StatelessWidget {
     return StoreProvider(
       store: store,
       child: MaterialApp(
-        title: Configure.AppName,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          accentColor: Colors.blue,
-          brightness: Brightness.light,
-        ),
-        routes: {
-          '/': (BuildContext context) => StoreBuilder<AppState>(
-                onInit: (store) => store.dispatch(LoadTodosAction()),
-                builder: (context, store) {
-                  return TodoListPage();
-                },
-              ),
-          '/editor': (BuildContext context) => TodoEditorPage(null),
-        },
-      ),
+          title: Configure.AppName,
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            accentColor: Colors.blue,
+            brightness: Brightness.light,
+          ),
+          routes: {
+            '/': (BuildContext context) => StoreBuilder<AppState>(
+                  onInit: (store) => store.dispatch(LoadTodosAction()),
+                  builder: (context, store) {
+                    return TodoListPage();
+                  },
+                ),
+          },
+          onGenerateRoute: (RouteSettings settings) {
+            final List<String> pathElements = settings.name.split('/');
+
+            if (pathElements[0] != '') {
+              return null;
+            }
+
+            if (pathElements[1] == 'editor') {
+              final String todoId =
+                  pathElements.length == 3 ? pathElements[2] : null;
+
+              return MaterialPageRoute<bool>(
+                builder: (BuildContext context) => TodoEditorPage(todoId),
+              );
+            }
+          }),
     );
   }
 }

@@ -49,7 +49,7 @@ class TodoCard extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              Navigator.pushNamed(context, '/editor');
+              Navigator.pushNamed(context, '/editor/${todo.id}');
             },
           )
         ],

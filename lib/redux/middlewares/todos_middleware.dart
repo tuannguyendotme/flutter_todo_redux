@@ -10,6 +10,7 @@ List<Middleware<AppState>> createTodosMiddleware() {
   return [
     TypedMiddleware<AppState, LoadTodosAction>(_loadTodos),
     TypedMiddleware<AppState, CreateTodoAction>(_createTodo),
+    TypedMiddleware<AppState, UpdateTodoAction>(_updateTodo),
   ];
 }
 
@@ -55,6 +56,24 @@ Future _createTodo(
 
   // action.onError();
   // store.dispatch(TodoNotCreatedAction());
+}
+
+Future _updateTodo(
+    Store<AppState> store, UpdateTodoAction action, NextDispatcher next) async {
+  print('_updateTodo - Middleware');
+
+  next(action);
+
+  final todo = await Future.delayed(
+    Duration(seconds: 3),
+    () => action.todo,
+  );
+
+  store.dispatch(TodoUpdatedAction(todo));
+  action.onSuccess();
+
+  // action.onError();
+  // store.dispatch(TodoNotUpdatedAction());
 }
 
 // List<Middleware<AppState>> createTodosMiddleware() {

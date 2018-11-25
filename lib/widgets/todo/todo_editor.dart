@@ -74,7 +74,18 @@ class _TodoEditorState extends State<TodoEditor> {
         _formKey.currentState.save();
 
         if (widget.todo != null) {
-          // TODO: Update todo
+          widget.onUpdateTodo(
+            Todo(
+              id: widget.todo.id,
+              title: _formData['title'],
+              content: _formData['content'],
+              priority: _formData['priority'],
+              isDone: _formData['isDone'],
+              userId: 'userId',
+            ),
+            this._onSuccess,
+            this._onError,
+          );
         } else {
           widget.onCreateTodo(
             _formData['title'],
