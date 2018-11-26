@@ -25,3 +25,8 @@ typedef OnUpdateTodo(
   OnSuccess onSuccess,
   OnError onError,
 );
+
+typedef OnDeleteTodo(
+  String id,
+  OnError onError,
+);

@@ -11,6 +11,7 @@ List<Middleware<AppState>> createTodosMiddleware() {
     TypedMiddleware<AppState, LoadTodosAction>(_loadTodos),
     TypedMiddleware<AppState, CreateTodoAction>(_createTodo),
     TypedMiddleware<AppState, UpdateTodoAction>(_updateTodo),
+    TypedMiddleware<AppState, DeleteTodoAction>(_deleteTodo),
   ];
 }
 
@@ -74,6 +75,20 @@ Future _updateTodo(
 
   // action.onError();
   // store.dispatch(TodoNotUpdatedAction());
+}
+
+Future _deleteTodo(
+    Store<AppState> store, DeleteTodoAction action, NextDispatcher next) async {
+  print('_updateTodo - Middleware');
+
+  next(action);
+
+  store.dispatch(TodoDeletedAction(action.id));
+
+  await Future.delayed(Duration(seconds: 3));
+
+  // store.dispatch(TodoNotDeletedAction());
+  // action.onError("Fail to delete todo.");
 }
 
 // List<Middleware<AppState>> createTodosMiddleware() {
