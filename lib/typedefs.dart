@@ -30,3 +30,8 @@ typedef OnDeleteTodo(
   String id,
   OnError onError,
 );
+
+typedef OnToggleTodoDone(
+  Todo todo,
+  OnError onError,
+);

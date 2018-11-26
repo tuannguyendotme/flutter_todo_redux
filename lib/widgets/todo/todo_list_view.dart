@@ -10,10 +10,12 @@ import 'package:flutter_todo/typedefs.dart';
 class TodoListView extends StatefulWidget {
   final List<Todo> todos;
   final OnDeleteTodo onDelete;
+  final OnToggleTodoDone onToggle;
 
   TodoListView(
     this.todos,
     this.onDelete,
+    this.onToggle,
   );
 
   @override
@@ -74,7 +76,7 @@ class _TodoListViewState extends State<TodoListView> {
               _onError,
             );
           },
-          child: TodoCard(todo),
+          child: TodoCard(todo, widget.onToggle, _onError),
           background: Container(color: Colors.red),
         );
       },

@@ -77,6 +77,7 @@ class TodoListPage extends StatelessWidget {
       body: TodoListView(
         vm.todos,
         vm.onDelete,
+        vm.onToggle,
       ),
     );
   }
@@ -86,11 +87,13 @@ class _ViewModel {
   final List<Todo> todos;
   final bool isLoading;
   final OnDeleteTodo onDelete;
+  final OnToggleTodoDone onToggle;
 
   _ViewModel({
     @required this.todos,
     @required this.isLoading,
     @required this.onDelete,
+    @required this.onToggle,
   });
 
   factory _ViewModel.from(Store<AppState> store) {
@@ -99,6 +102,9 @@ class _ViewModel {
       isLoading: store.state.isLoading,
       onDelete: (String id, OnError onError) {
         store.dispatch(DeleteTodoAction(id, onError));
+      },
+      onToggle: (Todo todo, OnError onError) {
+        store.dispatch(ToggleTodoDoneAction(todo, onError));
       },
     );
   }

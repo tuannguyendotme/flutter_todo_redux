@@ -8,7 +8,7 @@ final todosReducer = combineReducers<List<Todo>>([
   TypedReducer<List<Todo>, TodoCreatedAction>(_addTodo),
   TypedReducer<List<Todo>, TodoUpdatedAction>(_updateTodo),
   TypedReducer<List<Todo>, TodoDeletedAction>(_deleteTodo),
-  TypedReducer<List<Todo>, ToggleTodoDoneAction>(_toggleTodoStatus),
+  TypedReducer<List<Todo>, TodoDoneToggledAction>(_toggleTodoStatus),
 ]);
 
 List<Todo> _setTodos(List<Todo> todos, TodosLoadedAction action) {
@@ -31,9 +31,10 @@ List<Todo> _deleteTodo(List<Todo> todos, TodoDeletedAction action) {
   return todos.where((todo) => todo.id != action.id).toList();
 }
 
-List<Todo> _toggleTodoStatus(List<Todo> todos, ToggleTodoDoneAction action) {
+List<Todo> _toggleTodoStatus(List<Todo> todos, TodoDoneToggledAction action) {
   return todos
-      .map((todo) =>
-          todo.id == action.id ? todo.copyWith(isDone: !todo.isDone) : todo)
+      .map((todo) => todo.id == action.todo.id
+          ? todo.copyWith(isDone: !todo.isDone)
+          : todo)
       .toList();
 }

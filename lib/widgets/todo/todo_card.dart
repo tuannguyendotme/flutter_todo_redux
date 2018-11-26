@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_todo/typedefs.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
 
 class TodoCard extends StatelessWidget {
   final Todo todo;
+  final OnToggleTodoDone onToggle;
+  final OnError onError;
 
-  TodoCard(this.todo);
+  TodoCard(this.todo, this.onToggle, this.onError);
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +29,15 @@ class TodoCard extends StatelessWidget {
             child: todo.isDone
                 ? IconButton(
                     icon: Icon(Icons.check),
-                    onPressed: () {},
+                    onPressed: () {
+                      onToggle(todo, onError);
+                    },
                   )
                 : IconButton(
                     icon: Icon(Icons.check_box_outline_blank),
-                    onPressed: () {},
+                    onPressed: () {
+                      onToggle(todo, onError);
+                    },
                   ),
           ),
           Expanded(

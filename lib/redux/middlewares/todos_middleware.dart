@@ -12,6 +12,7 @@ List<Middleware<AppState>> createTodosMiddleware() {
     TypedMiddleware<AppState, CreateTodoAction>(_createTodo),
     TypedMiddleware<AppState, UpdateTodoAction>(_updateTodo),
     TypedMiddleware<AppState, DeleteTodoAction>(_deleteTodo),
+    TypedMiddleware<AppState, ToggleTodoDoneAction>(_toggleTodoDone),
   ];
 }
 
@@ -36,8 +37,6 @@ Future _loadTodos(
 
 Future _createTodo(
     Store<AppState> store, CreateTodoAction action, NextDispatcher next) async {
-  print('_createTodo - Middleware');
-
   next(action);
 
   final todo = await Future.delayed(
@@ -61,8 +60,6 @@ Future _createTodo(
 
 Future _updateTodo(
     Store<AppState> store, UpdateTodoAction action, NextDispatcher next) async {
-  print('_updateTodo - Middleware');
-
   next(action);
 
   final todo = await Future.delayed(
@@ -79,8 +76,6 @@ Future _updateTodo(
 
 Future _deleteTodo(
     Store<AppState> store, DeleteTodoAction action, NextDispatcher next) async {
-  print('_updateTodo - Middleware');
-
   next(action);
 
   store.dispatch(TodoDeletedAction(action.id));
@@ -89,6 +84,21 @@ Future _deleteTodo(
 
   // store.dispatch(TodoNotDeletedAction());
   // action.onError("Fail to delete todo.");
+}
+
+Future _toggleTodoDone(Store<AppState> store, ToggleTodoDoneAction action,
+    NextDispatcher next) async {
+  next(action);
+
+  final todo = await Future.delayed(
+    Duration(seconds: 3),
+    () => action.todo,
+  );
+
+  store.dispatch(TodoDoneToggledAction(todo));
+
+  // action.onError();
+  // store.dispatch(TodoNotUpdatedAction());
 }
 
 // List<Middleware<AppState>> createTodosMiddleware() {
