@@ -92,7 +92,7 @@ Future _toggleTodoDone(Store<AppState> store, ToggleTodoDoneAction action,
 
   final todo = await Future.delayed(
     Duration(seconds: 3),
-    () => action.todo,
+    () => action.todo.copyWith(isDone: !action.todo.isDone),
   );
 
   store.dispatch(TodoDoneToggledAction(todo));

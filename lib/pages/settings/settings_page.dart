@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_todo/redux/actions/settings_actions.dart';
 
-import 'package:scoped_model/scoped_model.dart';
+import 'package:redux/redux.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:flutter_todo/scoped_models/app_model.dart';
+import 'package:flutter_todo/models/app_state.dart';
+import 'package:flutter_todo/models/settings.dart';
 import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
 import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
 
-class SettingsPage extends StatefulWidget {
-  final AppModel model;
-
-  SettingsPage(this.model);
-
+class SettingsPage extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-    return _SettingsPageState();
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, _ViewModel>(
+      converter: (store) => _ViewModel.from(store),
+      builder: (BuildContext context, _ViewModel vm) {
+        return _buildPageContent(context, vm);
+      },
+    );
   }
-}
 
-class _SettingsPageState extends State<SettingsPage> {
-  Widget _buildAppBar(BuildContext context, AppModel model) {
+  Widget _buildAppBar(BuildContext context, _ViewModel vm) {
     return AppBar(
       title: Text('Settings'),
       backgroundColor: Colors.blue,
@@ -31,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
             if (confirm) {
               Navigator.pop(context);
 
-              model.logout();
+              // model.logout();
             }
           },
         ),
@@ -39,26 +41,26 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget _buildPageContent(AppModel model) {
-    return model.isLoading
+  Widget _buildPageContent(BuildContext context, _ViewModel vm) {
+    return vm.isLoading
         ? LoadingModal()
         : Scaffold(
-            appBar: _buildAppBar(context, model),
+            appBar: _buildAppBar(context, vm),
             body: ListView(
               children: <Widget>[
                 SwitchListTile(
                   activeColor: Colors.blue,
-                  value: model.settings.isShortcutsEnabled,
+                  value: vm.settings.isShortcutsEnabled,
                   onChanged: (value) {
-                    model.toggleIsShortcutEnabled();
+                    vm.toggleIsShortcutEnabled();
                   },
                   title: Text('Enable shortcuts'),
                 ),
                 SwitchListTile(
                   activeColor: Colors.blue,
-                  value: model.settings.isDarkThemeUsed,
+                  value: vm.settings.isDarkThemeUsed,
                   onChanged: (value) {
-                    model.toggleIsDarkThemeUsed();
+                    // model.toggleIsDarkThemeUsed();
                   },
                   title: Text('Use dark theme'),
                 )
@@ -66,13 +68,25 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           );
   }
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return ScopedModelDescendant<AppModel>(
-      builder: (BuildContext context, Widget child, AppModel model) {
-        return _buildPageContent(model);
-      },
-    );
+class _ViewModel {
+  final Settings settings;
+  final bool isLoading;
+  final Function toggleIsShortcutEnabled;
+
+  _ViewModel({
+    @required this.settings,
+    @required this.isLoading,
+    @required this.toggleIsShortcutEnabled,
+  });
+
+  factory _ViewModel.from(Store<AppState> store) {
+    return _ViewModel(
+        settings: store.state.settings,
+        isLoading: store.state.isLoading,
+        toggleIsShortcutEnabled: (Settings settings) {
+          store.dispatch(ToggleShortcutsEnabledSettingAction(settings));
+        });
   }
 }

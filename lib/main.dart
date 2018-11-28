@@ -4,15 +4,15 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:flutter_todo/.env.dart';
-
 import 'package:flutter_todo/models/app_state.dart';
-
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
+import 'package:flutter_todo/redux/actions/settings_actions.dart';
 import 'package:flutter_todo/redux/reducers/app_reducer.dart';
 import 'package:flutter_todo/redux/middlewares/todos_middleware.dart';
-
+import 'package:flutter_todo/redux/middlewares/settings_middleware.dart';
 import 'package:flutter_todo/pages/todo/todo_list_page.dart';
 import 'package:flutter_todo/pages/todo/todo_editor_page.dart';
+import 'package:flutter_todo/pages/settings/settings_page.dart';
 
 void main() {
   runApp(TodoApp());
@@ -22,7 +22,9 @@ class TodoApp extends StatelessWidget {
   final Store<AppState> store = Store<AppState>(
     appReducer,
     initialState: AppState.initial(),
-    middleware: createTodosMiddleware(),
+    middleware: List<Middleware<AppState>>()
+      ..addAll(createTodosMiddleware())
+      ..addAll(createSettingsMiddleware()),
   );
 
   @override
@@ -38,11 +40,15 @@ class TodoApp extends StatelessWidget {
           ),
           routes: {
             '/': (BuildContext context) => StoreBuilder<AppState>(
-                  onInit: (store) => store.dispatch(LoadTodosAction()),
+                  onInit: (store) {
+                    store.dispatch(LoadSettingsAction());
+                    store.dispatch(LoadTodosAction());
+                  },
                   builder: (context, store) {
                     return TodoListPage();
                   },
                 ),
+            '/settings': (BuildContext context) => SettingsPage(),
           },
           onGenerateRoute: (RouteSettings settings) {
             final List<String> pathElements = settings.name.split('/');

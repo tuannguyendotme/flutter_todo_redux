@@ -16,7 +16,7 @@ class TodoListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       converter: (store) => _ViewModel.from(store),
-      builder: (context, vm) {
+      builder: (BuildContext context, _ViewModel vm) {
         Stack stack = Stack(
           children: <Widget>[
             _buildPageContent(context, vm),
@@ -45,7 +45,7 @@ class TodoListPage extends StatelessWidget {
           onSelected: (String choice) {
             switch (choice) {
               case 'Settings':
-              // Navigator.pushNamed(context, '/settings');
+                Navigator.pushNamed(context, '/settings');
             }
           },
           itemBuilder: (BuildContext context) {
