@@ -15,7 +15,7 @@ class TodoListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-      converter: (store) => _ViewModel.from(store),
+      converter: (Store store) => _ViewModel.from(store),
       builder: (BuildContext context, _ViewModel vm) {
         Stack stack = Stack(
           children: <Widget>[

@@ -40,11 +40,11 @@ class TodoApp extends StatelessWidget {
           ),
           routes: {
             '/': (BuildContext context) => StoreBuilder<AppState>(
-                  onInit: (store) {
+                  onInit: (Store store) {
                     store.dispatch(LoadSettingsAction());
                     store.dispatch(LoadTodosAction());
                   },
-                  builder: (context, store) {
+                  builder: (BuildContext context, Store store) {
                     return TodoListPage();
                   },
                 ),
@@ -65,6 +65,8 @@ class TodoApp extends StatelessWidget {
                 builder: (BuildContext context) => TodoEditorPage(todoId),
               );
             }
+
+            return null;
           }),
     );
   }

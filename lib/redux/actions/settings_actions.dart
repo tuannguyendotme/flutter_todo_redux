@@ -8,14 +8,10 @@ class SettingsLoadedAction {
   SettingsLoadedAction(this.settings);
 }
 
-class ToggleShortcutsEnabledSettingAction {
-  final Settings settings;
+class ToggleShortcutsEnabledSettingAction {}
 
-  ToggleShortcutsEnabledSettingAction(this.settings);
-}
+class ShortcutsEnabledSettingToggledAction {}
 
-class ToggleDarkThemeUsedSettingAction {
-  final Settings settings;
+class ToggleDarkThemeUsedSettingAction {}
 
-  ToggleDarkThemeUsedSettingAction(this.settings);
-}
+class DarkThemeUsedSettingToggledAction {}

@@ -9,6 +9,10 @@ import 'package:flutter_todo/redux/actions/settings_actions.dart';
 List<Middleware<AppState>> createSettingsMiddleware() {
   return [
     TypedMiddleware<AppState, LoadSettingsAction>(_loadSettings),
+    TypedMiddleware<AppState, ToggleShortcutsEnabledSettingAction>(
+        _toggleShortcutsEnabledSetting),
+    TypedMiddleware<AppState, ToggleDarkThemeUsedSettingAction>(
+        _toggleDarkThemeUsedSetting),
   ];
 }
 
@@ -25,6 +29,31 @@ Future _loadSettings(Store<AppState> store, LoadSettingsAction action,
   );
 
   store.dispatch(SettingsLoadedAction(settings));
+
+  next(action);
+}
+
+Future _toggleShortcutsEnabledSetting(Store<AppState> store,
+    ToggleShortcutsEnabledSettingAction action, NextDispatcher next) async {
+  print('_toggleShortcutsEnabledSetting - Middleware');
+
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setBool('isShortcutsEnabled', !_loadIsShortcutsEnabled(prefs));
+
+  store.dispatch(ShortcutsEnabledSettingToggledAction());
+
+  next(action);
+}
+
+Future _toggleDarkThemeUsedSetting(Store<AppState> store,
+    ToggleDarkThemeUsedSettingAction action, NextDispatcher next) async {
+  print('_toggleShortcutsEnabledSetting - Middleware');
+
+  final prefs = await SharedPreferences.getInstance();
+  final isDarkThemeUsed = !_loadIsDarkThemeUsed(prefs);
+  prefs.setBool('isDarkThemeUsed', isDarkThemeUsed);
+
+  store.dispatch(DarkThemeUsedSettingToggledAction());
 
   next(action);
 }

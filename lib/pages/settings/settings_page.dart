@@ -13,7 +13,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-      converter: (store) => _ViewModel.from(store),
+      converter: (Store store) => _ViewModel.from(store),
       builder: (BuildContext context, _ViewModel vm) {
         return _buildPageContent(context, vm);
       },
@@ -60,7 +60,7 @@ class SettingsPage extends StatelessWidget {
                   activeColor: Colors.blue,
                   value: vm.settings.isDarkThemeUsed,
                   onChanged: (value) {
-                    // model.toggleIsDarkThemeUsed();
+                    vm.toggleDarkThemeUsed();
                   },
                   title: Text('Use dark theme'),
                 )
@@ -74,19 +74,25 @@ class _ViewModel {
   final Settings settings;
   final bool isLoading;
   final Function toggleIsShortcutEnabled;
+  final Function toggleDarkThemeUsed;
 
   _ViewModel({
     @required this.settings,
     @required this.isLoading,
     @required this.toggleIsShortcutEnabled,
+    @required this.toggleDarkThemeUsed,
   });
 
   factory _ViewModel.from(Store<AppState> store) {
     return _ViewModel(
-        settings: store.state.settings,
-        isLoading: store.state.isLoading,
-        toggleIsShortcutEnabled: (Settings settings) {
-          store.dispatch(ToggleShortcutsEnabledSettingAction(settings));
-        });
+      settings: store.state.settings,
+      isLoading: store.state.isLoading,
+      toggleIsShortcutEnabled: () {
+        store.dispatch(ToggleShortcutsEnabledSettingAction());
+      },
+      toggleDarkThemeUsed: () {
+        store.dispatch(ToggleDarkThemeUsedSettingAction());
+      },
+    );
   }
 }
