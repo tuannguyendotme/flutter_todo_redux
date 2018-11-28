@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/redux/actions/settings_actions.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:flutter_todo/app_builder.dart';
 import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/settings.dart';
+import 'package:flutter_todo/redux/actions/settings_actions.dart';
 import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
 import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
 
@@ -61,6 +62,8 @@ class SettingsPage extends StatelessWidget {
                   value: vm.settings.isDarkThemeUsed,
                   onChanged: (value) {
                     vm.toggleDarkThemeUsed();
+
+                    AppBuilder.of(context).rebuild();
                   },
                   title: Text('Use dark theme'),
                 )

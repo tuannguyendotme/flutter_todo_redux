@@ -23,8 +23,4 @@ class AppState {
       todos: todos ?? this.todos,
     );
   }
-
-  factory AppState.initial() => AppState(
-        isLoading: true,
-      );
 }
