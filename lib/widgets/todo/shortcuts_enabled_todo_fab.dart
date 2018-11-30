@@ -2,15 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_todo/models/priority.dart';
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/scoped_models/app_model.dart';
-
 class ShortcutsEnabledTodoFab extends StatefulWidget {
-  final AppModel model;
-
-  ShortcutsEnabledTodoFab(this.model);
-
   @override
   State<StatefulWidget> createState() {
     return _ShortcutsEnabledTodoFabState();
@@ -19,13 +11,10 @@ class ShortcutsEnabledTodoFab extends StatefulWidget {
 
 class _ShortcutsEnabledTodoFabState extends State<ShortcutsEnabledTodoFab>
     with TickerProviderStateMixin {
-  AppModel _model;
   AnimationController _controller;
 
   @override
   void initState() {
-    _model = widget.model;
-
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
@@ -52,14 +41,9 @@ class _ShortcutsEnabledTodoFabState extends State<ShortcutsEnabledTodoFab>
               child: Icon(Icons.add),
               mini: true,
               onPressed: () {
-                _model.setCurrentTodo(Todo(
-                  id: null,
-                  title: '',
-                  userId: _model.user.id,
-                  priority: Priority.Low,
-                ));
+                _controller.reverse();
 
-                Navigator.pushNamed(context, '/editor');
+                Navigator.pushNamed(context, '/editor/0/Low');
               },
             ),
           ),
@@ -77,14 +61,9 @@ class _ShortcutsEnabledTodoFabState extends State<ShortcutsEnabledTodoFab>
               child: Icon(Icons.add),
               mini: true,
               onPressed: () {
-                _model.setCurrentTodo(Todo(
-                  id: null,
-                  title: '',
-                  userId: _model.user.id,
-                  priority: Priority.Medium,
-                ));
+                _controller.reverse();
 
-                Navigator.pushNamed(context, '/editor');
+                Navigator.pushNamed(context, '/editor/0/Medium');
               },
             ),
           ),
@@ -102,14 +81,9 @@ class _ShortcutsEnabledTodoFabState extends State<ShortcutsEnabledTodoFab>
               child: Icon(Icons.add),
               mini: true,
               onPressed: () {
-                _model.setCurrentTodo(Todo(
-                  id: null,
-                  title: '',
-                  userId: _model.user.id,
-                  priority: Priority.High,
-                ));
+                _controller.reverse();
 
-                Navigator.pushNamed(context, '/editor');
+                Navigator.pushNamed(context, '/editor/0/High');
               },
             ),
           ),

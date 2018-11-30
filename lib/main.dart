@@ -91,10 +91,13 @@ class _TodoAppState extends State<TodoApp> {
 
               if (pathElements[1] == 'editor') {
                 final String todoId =
-                    pathElements.length == 3 ? pathElements[2] : null;
+                    pathElements.length >= 3 ? pathElements[2] : null;
+                final String priority =
+                    pathElements.length == 4 ? pathElements[3] : null;
 
                 return MaterialPageRoute<bool>(
-                  builder: (BuildContext context) => TodoEditorPage(todoId),
+                  builder: (BuildContext context) =>
+                      TodoEditorPage(todoId, priority),
                 );
               }
 

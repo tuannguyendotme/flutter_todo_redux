@@ -8,14 +8,17 @@ import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
 import 'package:flutter_todo/widgets/form_inputs/toggle_button.dart';
 import 'package:flutter_todo/widgets/form_inputs/priority_selector.dart';
 import 'package:flutter_todo/widgets/helpers/message_dialog.dart';
+import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
 
 class TodoEditor extends StatefulWidget {
   final Todo todo;
+  final String priority;
   final OnCreateTodo onCreateTodo;
   final OnUpdateTodo onUpdateTodo;
 
   TodoEditor(
     this.todo,
+    this.priority,
     this.onCreateTodo,
     this.onUpdateTodo,
   );
@@ -33,10 +36,12 @@ class _TodoEditorState extends State<TodoEditor> {
     'priority': Priority.Low,
     'isDone': false
   };
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   _selectPriority(Priority priority) {
+    print('_selectPriority:');
+    print(priority);
+
     _formData['priority'] = priority;
   }
 
@@ -87,6 +92,9 @@ class _TodoEditorState extends State<TodoEditor> {
             this._onError,
           );
         } else {
+          print('_buildFloatingActionButton');
+          print(_formData['priority']);
+
           widget.onCreateTodo(
             _formData['title'],
             _formData['content'],
@@ -127,16 +135,17 @@ class _TodoEditorState extends State<TodoEditor> {
   }
 
   Widget _buildOthers(Todo todo) {
-    bool isDone = todo != null && todo.isDone;
+    final bool isDone = todo != null && todo.isDone;
+    final priority = todo != null
+        ? todo.priority
+        : PriorityHelper.toPriority(
+            "Priority.${widget.priority != null ? widget.priority : 'Low'}");
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         ToggleButton(isDone, _toggleDone),
-        PrioritySelector(
-          todo != null ? todo.priority : Priority.Low,
-          _selectPriority,
-        ),
+        PrioritySelector(priority, _selectPriority),
       ],
     );
   }
@@ -154,8 +163,14 @@ class _TodoEditorState extends State<TodoEditor> {
 
     _formData['title'] = todo != null ? todo.title : null;
     _formData['content'] = todo != null ? todo.content : null;
-    _formData['priority'] = todo != null ? todo.priority : Priority.Low;
+    _formData['priority'] = todo != null
+        ? todo.priority
+        : PriorityHelper.toPriority(
+            "Priority.${widget.priority != null ? widget.priority : 'Low'}");
     _formData['isDone'] = todo != null ? todo.isDone : false;
+
+    print('_buildForm');
+    print(_formData['priority']);
 
     return Form(
       key: _formKey,
@@ -174,6 +189,8 @@ class _TodoEditorState extends State<TodoEditor> {
 
   @override
   Widget build(BuildContext context) {
+    print('build');
+
     return Scaffold(
       appBar: _buildAppBar(),
       floatingActionButton: _buildFloatingActionButton(),

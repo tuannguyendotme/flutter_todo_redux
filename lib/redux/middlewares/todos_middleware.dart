@@ -39,6 +39,9 @@ Future _createTodo(
     Store<AppState> store, CreateTodoAction action, NextDispatcher next) async {
   next(action);
 
+  print('_createTodo');
+  print(action.priority);
+
   final todo = await Future.delayed(
     Duration(seconds: 3),
     () => Todo(

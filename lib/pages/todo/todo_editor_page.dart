@@ -13,8 +13,9 @@ import 'package:flutter_todo/widgets/todo/todo_editor.dart';
 
 class TodoEditorPage extends StatelessWidget {
   final String id;
+  final String priority;
 
-  TodoEditorPage(this.id);
+  TodoEditorPage(this.id, this.priority);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,12 @@ class TodoEditorPage extends StatelessWidget {
       builder: (context, vm) {
         Stack stack = Stack(
           children: <Widget>[
-            TodoEditor(vm.todo, vm.onCreate, vm.onUpdate),
+            TodoEditor(
+              vm.todo,
+              this.priority,
+              vm.onCreate,
+              vm.onUpdate,
+            ),
           ],
         );
 
@@ -51,7 +57,7 @@ class _ViewModel {
   });
 
   factory _ViewModel.from(Store<AppState> store, String id) {
-    final Todo todo = id != null
+    final Todo todo = id != null && id != '0'
         ? store.state.todos.where((todo) => todo.id == id).first
         : null;
 
@@ -66,6 +72,9 @@ class _ViewModel {
         OnSuccess onSuccess,
         OnError onError,
       ) {
+        print('_ViewModel onCreate');
+        print(priority);
+
         store.dispatch(CreateTodoAction(
           title,
           content,
