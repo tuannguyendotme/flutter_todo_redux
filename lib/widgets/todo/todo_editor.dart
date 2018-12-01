@@ -4,9 +4,9 @@ import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/models/priority.dart';
 import 'package:flutter_todo/typedefs.dart';
+import 'package:flutter_todo/widgets/form_fields/priority_form_field.dart';
+import 'package:flutter_todo/widgets/form_fields/toggle_form_field.dart';
 import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
-import 'package:flutter_todo/widgets/form_inputs/toggle_button.dart';
-import 'package:flutter_todo/widgets/form_inputs/priority_selector.dart';
 import 'package:flutter_todo/widgets/helpers/message_dialog.dart';
 import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
 
@@ -37,17 +37,6 @@ class _TodoEditorState extends State<TodoEditor> {
     'isDone': false
   };
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  _selectPriority(Priority priority) {
-    print('_selectPriority:');
-    print(priority);
-
-    _formData['priority'] = priority;
-  }
-
-  _toggleDone(bool isDone) {
-    _formData['isDone'] = isDone;
-  }
 
   Widget _buildAppBar() {
     return AppBar(
@@ -144,8 +133,18 @@ class _TodoEditorState extends State<TodoEditor> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        ToggleButton(isDone, _toggleDone),
-        PrioritySelector(priority, _selectPriority),
+        ToggleFormField(
+          initialValue: isDone,
+          onSaved: (value) {
+            _formData['isDone'] = value;
+          },
+        ),
+        PriorityFormField(
+          initialValue: priority,
+          onSaved: (value) {
+            _formData['priority'] = value;
+          },
+        )
       ],
     );
   }
