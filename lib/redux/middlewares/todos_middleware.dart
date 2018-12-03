@@ -1,8 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
+import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
 
+import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/models/app_state.dart';
+import 'package:flutter_todo/models/user.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
 
@@ -22,17 +27,54 @@ Future _loadTodos(
 
   next(action);
 
-  final todos = await Future.delayed(
-      Duration(seconds: 3),
-      () => [
-            Todo(id: '1', title: 'Todo 1', userId: 'userId'),
-            Todo(id: '2', title: 'Todo 2', userId: 'userId'),
-            Todo(id: '3', title: 'Todo 3', userId: 'userId'),
-            Todo(id: '4', title: 'Todo 4', userId: 'userId'),
-            Todo(id: '5', title: 'Todo 5', userId: 'userId'),
-          ]);
+  final User user = store.state.user;
 
-  store.dispatch(TodosLoadedAction(todos));
+  try {
+    final http.Response response = await http.get(
+        '${Configure.FirebaseUrl}/todos.json?auth=${user.token}&orderBy="userId"&equalTo="${user.id}"');
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      // action.onError('Fail to load todos.');
+      store.dispatch(TodosNotLoadedAction());
+
+      return;
+    }
+
+    final Map<String, dynamic> todoListData = json.decode(response.body);
+    final List<Todo> todos = [];
+
+    if (todoListData != null) {
+      todoListData.forEach((String todoId, dynamic todoData) {
+        final Todo todo = Todo(
+          id: todoId,
+          title: todoData['title'],
+          content: todoData['content'],
+          priority: PriorityHelper.toPriority(todoData['priority']),
+          isDone: todoData['isDone'],
+          userId: user.id,
+        );
+
+        todos.add(todo);
+      });
+    }
+
+    store.dispatch(TodosLoadedAction(todos));
+  } catch (error) {
+    // action.onError(error);
+    store.dispatch(TodosNotLoadedAction());
+  }
+
+  // final todos = await Future.delayed(
+  //     Duration(seconds: 3),
+  //     () => [
+  //           Todo(id: '1', title: 'Todo 1', userId: 'userId'),
+  //           Todo(id: '2', title: 'Todo 2', userId: 'userId'),
+  //           Todo(id: '3', title: 'Todo 3', userId: 'userId'),
+  //           Todo(id: '4', title: 'Todo 4', userId: 'userId'),
+  //           Todo(id: '5', title: 'Todo 5', userId: 'userId'),
+  //         ]);
+
+  // store.dispatch(TodosLoadedAction(todos));
 }
 
 Future _createTodo(

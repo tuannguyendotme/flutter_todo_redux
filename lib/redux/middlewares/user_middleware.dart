@@ -17,8 +17,11 @@ List<Middleware<AppState>> createUserMiddleware() {
   ];
 }
 
-Future _authenticate(Store<AppState> store, UserAuthenticateAction action,
-    NextDispatcher next) async {
+Future _authenticate(
+  Store<AppState> store,
+  UserAuthenticateAction action,
+  NextDispatcher next,
+) async {
   print('_authenticate - Middleware');
 
   next(action);
@@ -78,7 +81,10 @@ Future _authenticate(Store<AppState> store, UserAuthenticateAction action,
 }
 
 Future _logOut(
-    Store<AppState> store, UserLogOutAction action, NextDispatcher next) async {
+  Store<AppState> store,
+  UserLogOutAction action,
+  NextDispatcher next,
+) async {
   next(action);
 
   final prefs = await SharedPreferences.getInstance();
