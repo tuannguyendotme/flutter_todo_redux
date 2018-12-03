@@ -58,7 +58,7 @@ class _ViewModel {
 
   factory _ViewModel.from(Store<AppState> store, String id) {
     final Todo todo = id != null && id != '0'
-        ? store.state.todos.where((todo) => todo.id == id).first
+        ? store.state.todos.firstWhere((todo) => todo.id == id)
         : null;
 
     return _ViewModel(
@@ -72,9 +72,6 @@ class _ViewModel {
         OnSuccess onSuccess,
         OnError onError,
       ) {
-        print('_ViewModel onCreate');
-        print(priority);
-
         store.dispatch(CreateTodoAction(
           title,
           content,

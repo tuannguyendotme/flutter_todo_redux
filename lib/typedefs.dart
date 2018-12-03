@@ -35,3 +35,10 @@ typedef OnToggleTodoDone(
   Todo todo,
   OnError onError,
 );
+
+typedef OnAuthenticateUser(
+  String email,
+  String password,
+  OnSuccess onSuccess,
+  OnError onError,
+);

@@ -81,9 +81,6 @@ class _TodoEditorState extends State<TodoEditor> {
             this._onError,
           );
         } else {
-          print('_buildFloatingActionButton');
-          print(_formData['priority']);
-
           widget.onCreateTodo(
             _formData['title'],
             _formData['content'],
@@ -168,9 +165,6 @@ class _TodoEditorState extends State<TodoEditor> {
             "Priority.${widget.priority != null ? widget.priority : 'Low'}");
     _formData['isDone'] = todo != null ? todo.isDone : false;
 
-    print('_buildForm');
-    print(_formData['priority']);
-
     return Form(
       key: _formKey,
       child: ListView(
@@ -188,8 +182,6 @@ class _TodoEditorState extends State<TodoEditor> {
 
   @override
   Widget build(BuildContext context) {
-    print('build');
-
     return Scaffold(
       appBar: _buildAppBar(),
       floatingActionButton: _buildFloatingActionButton(),

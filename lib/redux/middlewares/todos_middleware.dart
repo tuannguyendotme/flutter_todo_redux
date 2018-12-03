@@ -20,6 +20,8 @@ Future _loadTodos(
     Store<AppState> store, LoadTodosAction action, NextDispatcher next) async {
   print('_loadTodos - Middleware');
 
+  next(action);
+
   final todos = await Future.delayed(
       Duration(seconds: 3),
       () => [
@@ -31,8 +33,6 @@ Future _loadTodos(
           ]);
 
   store.dispatch(TodosLoadedAction(todos));
-
-  next(action);
 }
 
 Future _createTodo(

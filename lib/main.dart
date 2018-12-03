@@ -6,26 +6,33 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/app_builder.dart';
-import 'package:flutter_todo/models/settings.dart';
 import 'package:flutter_todo/models/app_state.dart';
+import 'package:flutter_todo/models/user.dart';
+import 'package:flutter_todo/models/settings.dart';
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
 import 'package:flutter_todo/redux/reducers/app_reducer.dart';
 import 'package:flutter_todo/redux/middlewares/todos_middleware.dart';
 import 'package:flutter_todo/redux/middlewares/settings_middleware.dart';
+import 'package:flutter_todo/redux/middlewares/user_middleware.dart';
 import 'package:flutter_todo/pages/todo/todo_list_page.dart';
 import 'package:flutter_todo/pages/todo/todo_editor_page.dart';
 import 'package:flutter_todo/pages/settings/settings_page.dart';
+import 'package:flutter_todo/pages/auth/auth_page.dart';
 
 void main() async {
+  final User user = await _autoAuthenticate();
+  final Settings settings = await _loadSettings();
+
   final Store<AppState> store = Store<AppState>(
     appReducer,
     initialState: AppState(
-      isLoading: true,
-      settings: await _loadSettings(),
+      settings: settings,
+      user: user,
     ),
     middleware: []
       ..addAll(createTodosMiddleware())
-      ..addAll(createSettingsMiddleware()),
+      ..addAll(createSettingsMiddleware())
+      ..addAll(createUserMiddleware()),
   );
 
   runApp(TodoApp(store));
@@ -44,6 +51,34 @@ Future<Settings> _loadSettings() async {
   return settings;
 }
 
+Future<User> _autoAuthenticate() async {
+  final prefs = await SharedPreferences.getInstance();
+  final String token = prefs.getString('token');
+
+  if (token != null) {
+    final String expiryTimeString = prefs.getString('expiryTime');
+    final DateTime now = DateTime.now();
+    final parsedExpiryTime = DateTime.parse(expiryTimeString);
+
+    if (parsedExpiryTime.isBefore(now)) {
+      return null;
+    }
+
+    final user = User(
+      id: prefs.getString('userId'),
+      email: prefs.getString('email'),
+      token: token,
+    );
+
+    // final int tokenLifespan = parsedExpiryTime.difference(now).inSeconds;
+    // setAuthTimeout(tokenLifespan);
+
+    return user;
+  }
+
+  return null;
+}
+
 class TodoApp extends StatefulWidget {
   final Store<AppState> store;
 
@@ -60,27 +95,30 @@ class _TodoAppState extends State<TodoApp> {
       store: widget.store,
       child: AppBuilder(
         builder: (BuildContext context) {
-          final state = widget.store.state;
-
           return MaterialApp(
             title: Configure.AppName,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               accentColor: Colors.blue,
-              brightness: state.settings.isDarkThemeUsed
+              brightness: widget.store.state.settings.isDarkThemeUsed
                   ? Brightness.dark
                   : Brightness.light,
             ),
             routes: {
               '/': (BuildContext context) => StoreBuilder<AppState>(
                     onInit: (Store store) {
-                      store.dispatch(LoadTodosAction());
+                      if (store.state.user != null) {
+                        store.dispatch(LoadTodosAction());
+                      }
                     },
                     builder: (BuildContext context, Store store) {
-                      return TodoListPage();
+                      return store.state.user != null
+                          ? TodoListPage()
+                          : AuthPage();
                     },
                   ),
-              '/settings': (BuildContext context) => SettingsPage(),
+              '/settings': (BuildContext context) =>
+                  widget.store.state.user != null ? SettingsPage() : AuthPage(),
             },
             onGenerateRoute: (RouteSettings settings) {
               final List<String> pathElements = settings.name.split('/');

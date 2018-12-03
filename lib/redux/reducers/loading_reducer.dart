@@ -1,8 +1,10 @@
 import 'package:redux/redux.dart';
 
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
+import 'package:flutter_todo/redux/actions/user_actions.dart';
 
 final loadingReducer = combineReducers<bool>([
+  TypedReducer<bool, LoadTodosAction>(_setLoadingTrue),
   TypedReducer<bool, TodosLoadedAction>(_setLoadingFalse),
   TypedReducer<bool, TodosNotLoadedAction>(_setLoadingFalse),
   TypedReducer<bool, CreateTodoAction>(_setLoadingTrue),
@@ -14,6 +16,9 @@ final loadingReducer = combineReducers<bool>([
   TypedReducer<bool, TodoDeletedAction>(_setLoadingFalse),
   TypedReducer<bool, ToggleTodoDoneAction>(_setLoadingTrue),
   TypedReducer<bool, TodoDoneToggledAction>(_setLoadingFalse),
+  TypedReducer<bool, UserAuthenticateAction>(_setLoadingTrue),
+  TypedReducer<bool, UserAuthenticatedAction>(_setLoadingFalse),
+  TypedReducer<bool, UserNotAuthenticatedAction>(_setLoadingFalse),
 ]);
 
 bool _setLoadingTrue(bool isLoading, dynamic action) {
