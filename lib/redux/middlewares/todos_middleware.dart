@@ -114,16 +114,36 @@ Future _updateTodo(
     Store<AppState> store, UpdateTodoAction action, NextDispatcher next) async {
   next(action);
 
-  final todo = await Future.delayed(
-    Duration(seconds: 3),
-    () => action.todo,
-  );
+  final User user = store.state.user;
+  final Todo todo = action.todo;
 
-  store.dispatch(TodoUpdatedAction(todo));
-  action.onSuccess();
+  final Map<String, dynamic> formData = {
+    'title': todo.title,
+    'content': todo.content,
+    'priority': todo.priority.toString(),
+    'isDone': todo.isDone,
+    'userId': user.id,
+  };
 
-  // action.onError();
-  // store.dispatch(TodoNotUpdatedAction());
+  try {
+    final http.Response response = await http.put(
+      '${Configure.FirebaseUrl}/todos/${action.todo.id}.json?auth=${user.token}',
+      body: json.encode(formData),
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      action.onError('Failed to update todo.');
+      store.dispatch(TodoNotUpdatedAction());
+
+      return;
+    }
+
+    store.dispatch(TodoUpdatedAction(todo));
+    action.onSuccess();
+  } catch (error) {
+    action.onError(error);
+    store.dispatch(TodoNotUpdatedAction());
+  }
 }
 
 Future _deleteTodo(
