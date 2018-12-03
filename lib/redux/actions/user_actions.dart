@@ -4,13 +4,11 @@ import 'package:flutter_todo/models/user.dart';
 class UserAuthenticateAction {
   final String email;
   final String password;
-  final OnSuccess onSuccess;
   final OnError onError;
 
   UserAuthenticateAction(
     this.email,
     this.password,
-    this.onSuccess,
     this.onError,
   );
 }
@@ -27,4 +25,10 @@ class UserNotAuthenticatedAction {
   UserNotAuthenticatedAction(this.message);
 }
 
-class LogOutAction {}
+class UserLogOutAction {
+  final OnSuccess onSuccess;
+
+  UserLogOutAction(this.onSuccess);
+}
+
+class UserLoggedOutAction {}

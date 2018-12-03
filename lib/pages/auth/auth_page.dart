@@ -46,13 +46,11 @@ class _ViewModel {
         onAuthenticate: (
           String email,
           String password,
-          OnSuccess onSuccess,
           OnError onError,
         ) {
           store.dispatch(UserAuthenticateAction(
             email,
             password,
-            onSuccess,
             onError,
           ));
         });

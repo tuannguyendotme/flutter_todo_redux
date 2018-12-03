@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
+import 'package:flutter_todo/typedefs.dart';
 import 'package:flutter_todo/app_builder.dart';
 import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/settings.dart';
+import 'package:flutter_todo/redux/actions/user_actions.dart';
 import 'package:flutter_todo/redux/actions/settings_actions.dart';
 import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
 import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
@@ -34,7 +36,7 @@ class SettingsPage extends StatelessWidget {
             if (confirm) {
               Navigator.pop(context);
 
-              // model.logout();
+              vm.onLogOut(() => Navigator.pushReplacementNamed(context, '/'));
             }
           },
         ),
@@ -78,12 +80,14 @@ class _ViewModel {
   final bool isLoading;
   final Function toggleIsShortcutEnabled;
   final Function toggleDarkThemeUsed;
+  final OnLogOut onLogOut;
 
   _ViewModel({
     @required this.settings,
     @required this.isLoading,
     @required this.toggleIsShortcutEnabled,
     @required this.toggleDarkThemeUsed,
+    @required this.onLogOut,
   });
 
   factory _ViewModel.from(Store<AppState> store) {
@@ -95,6 +99,9 @@ class _ViewModel {
       },
       toggleDarkThemeUsed: () {
         store.dispatch(ToggleDarkThemeUsedSettingAction());
+      },
+      onLogOut: (OnSuccess onSuccess) {
+        store.dispatch(UserLogOutAction(onSuccess));
       },
     );
   }

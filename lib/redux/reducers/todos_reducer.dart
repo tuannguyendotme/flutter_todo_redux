@@ -2,6 +2,7 @@ import 'package:redux/redux.dart';
 
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
+import 'package:flutter_todo/redux/actions/user_actions.dart';
 
 final todosReducer = combineReducers<List<Todo>>([
   TypedReducer<List<Todo>, TodosLoadedAction>(_setTodos),
@@ -9,6 +10,7 @@ final todosReducer = combineReducers<List<Todo>>([
   TypedReducer<List<Todo>, TodoUpdatedAction>(_updateTodo),
   TypedReducer<List<Todo>, TodoDeletedAction>(_deleteTodo),
   TypedReducer<List<Todo>, TodoDoneToggledAction>(_toggleTodoStatus),
+  TypedReducer<List<Todo>, UserLoggedOutAction>(_logOut),
 ]);
 
 List<Todo> _setTodos(List<Todo> todos, TodosLoadedAction action) {
@@ -37,4 +39,8 @@ List<Todo> _toggleTodoStatus(List<Todo> todos, TodoDoneToggledAction action) {
           ? todo.copyWith(isDone: !todo.isDone)
           : todo)
       .toList();
+}
+
+List<Todo> _logOut(List<Todo> todos, UserLoggedOutAction action) {
+  return [];
 }

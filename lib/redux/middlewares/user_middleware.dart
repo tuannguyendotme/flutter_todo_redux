@@ -8,10 +8,12 @@ import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/user.dart';
 import 'package:flutter_todo/redux/actions/user_actions.dart';
+import 'package:flutter_todo/redux/actions/todos_actions.dart';
 
 List<Middleware<AppState>> createUserMiddleware() {
   return [
     TypedMiddleware<AppState, UserAuthenticateAction>(_authenticate),
+    TypedMiddleware<AppState, UserLogOutAction>(_logOut),
   ];
 }
 
@@ -56,7 +58,7 @@ Future _authenticate(Store<AppState> store, UserAuthenticateAction action,
       prefs.setString('expiryTime', expiryTime.toIso8601String());
 
       store.dispatch(UserAuthenticatedAction(user));
-      action.onSuccess();
+      store.dispatch(LoadTodosAction());
 
       return;
     } else if (responseData['error']['message'] == 'EMAIL_NOT_FOUND') {
@@ -73,4 +75,14 @@ Future _authenticate(Store<AppState> store, UserAuthenticateAction action,
     store.dispatch(UserNotAuthenticatedAction(error));
     action.onError(error);
   }
+}
+
+Future _logOut(
+    Store<AppState> store, UserLogOutAction action, NextDispatcher next) async {
+  next(action);
+
+  final prefs = await SharedPreferences.getInstance();
+  prefs.clear();
+
+  store.dispatch(UserLoggedOutAction());
 }

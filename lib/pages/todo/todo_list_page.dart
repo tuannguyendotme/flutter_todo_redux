@@ -8,6 +8,8 @@ import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
+import 'package:flutter_todo/redux/actions/user_actions.dart';
+import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
 import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
 import 'package:flutter_todo/widgets/todo/shortcuts_enabled_todo_fab.dart';
 import 'package:flutter_todo/widgets/todo/todo_list_view.dart';
@@ -33,14 +35,20 @@ class TodoListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
+  Widget _buildAppBar(BuildContext context, _ViewModel vm) {
     return AppBar(
       title: Text(Configure.AppName),
       backgroundColor: Colors.blue,
       actions: <Widget>[
         IconButton(
           icon: Icon(Icons.lock),
-          onPressed: () {},
+          onPressed: () async {
+            bool confirm = await ConfirmDialog.show(context);
+
+            if (confirm) {
+              vm.onLogOut(() => Navigator.pushReplacementNamed(context, '/'));
+            }
+          },
         ),
         PopupMenuButton<String>(
           onSelected: (String choice) {
@@ -80,7 +88,7 @@ class TodoListPage extends StatelessWidget {
 
   Widget _buildPageContent(BuildContext context, _ViewModel vm) {
     return Scaffold(
-      appBar: _buildAppBar(context),
+      appBar: _buildAppBar(context, vm),
       floatingActionButton:
           _buildFloatingActionButton(context, vm.isShortcutsEnabled),
       body: TodoListView(
@@ -98,6 +106,7 @@ class _ViewModel {
   final bool isShortcutsEnabled;
   final OnDeleteTodo onDelete;
   final OnToggleTodoDone onToggle;
+  final OnLogOut onLogOut;
 
   _ViewModel({
     @required this.todos,
@@ -105,6 +114,7 @@ class _ViewModel {
     @required this.isShortcutsEnabled,
     @required this.onDelete,
     @required this.onToggle,
+    @required this.onLogOut,
   });
 
   factory _ViewModel.from(Store<AppState> store) {
@@ -119,6 +129,9 @@ class _ViewModel {
       },
       onToggle: (Todo todo, OnError onError) {
         store.dispatch(ToggleTodoDoneAction(todo, onError));
+      },
+      onLogOut: (OnSuccess onSuccess) {
+        store.dispatch(UserLogOutAction(onSuccess));
       },
     );
   }

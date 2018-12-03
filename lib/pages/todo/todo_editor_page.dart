@@ -7,6 +7,8 @@ import 'package:flutter_todo/typedefs.dart';
 import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/models/priority.dart';
+import 'package:flutter_todo/models/user.dart';
+import 'package:flutter_todo/redux/actions/user_actions.dart';
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
 import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
 import 'package:flutter_todo/widgets/todo/todo_editor.dart';
@@ -27,6 +29,7 @@ class TodoEditorPage extends StatelessWidget {
             TodoEditor(
               vm.todo,
               this.priority,
+              vm.user,
               vm.onCreate,
               vm.onUpdate,
             ),
@@ -45,15 +48,19 @@ class TodoEditorPage extends StatelessWidget {
 
 class _ViewModel {
   final Todo todo;
+  final User user;
   final bool isLoading;
   final OnCreateTodo onCreate;
   final OnUpdateTodo onUpdate;
+  final OnLogOut onLogOut;
 
   _ViewModel({
     @required this.todo,
+    @required this.user,
     @required this.isLoading,
     @required this.onCreate,
     @required this.onUpdate,
+    @required this.onLogOut,
   });
 
   factory _ViewModel.from(Store<AppState> store, String id) {
@@ -63,6 +70,7 @@ class _ViewModel {
 
     return _ViewModel(
       todo: todo,
+      user: store.state.user,
       isLoading: store.state.isLoading,
       onCreate: (
         String title,
@@ -77,7 +85,7 @@ class _ViewModel {
           content,
           priority,
           isDone,
-          'userId',
+          store.state.user.id,
           onSuccess,
           onError,
         ));
@@ -92,6 +100,9 @@ class _ViewModel {
           onSuccess,
           onError,
         ));
+      },
+      onLogOut: (OnSuccess onSuccess) {
+        store.dispatch(UserLogOutAction(onSuccess));
       },
     );
   }

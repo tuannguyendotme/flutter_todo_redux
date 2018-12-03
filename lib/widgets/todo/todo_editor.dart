@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/models/priority.dart';
+import 'package:flutter_todo/models/user.dart';
 import 'package:flutter_todo/typedefs.dart';
 import 'package:flutter_todo/widgets/form_fields/priority_form_field.dart';
 import 'package:flutter_todo/widgets/form_fields/toggle_form_field.dart';
@@ -13,12 +14,14 @@ import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
 class TodoEditor extends StatefulWidget {
   final Todo todo;
   final String priority;
+  final User user;
   final OnCreateTodo onCreateTodo;
   final OnUpdateTodo onUpdateTodo;
 
   TodoEditor(
     this.todo,
     this.priority,
+    this.user,
     this.onCreateTodo,
     this.onUpdateTodo,
   );
@@ -75,7 +78,7 @@ class _TodoEditorState extends State<TodoEditor> {
               content: _formData['content'],
               priority: _formData['priority'],
               isDone: _formData['isDone'],
-              userId: 'userId',
+              userId: widget.user.id,
             ),
             this._onSuccess,
             this._onError,

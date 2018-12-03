@@ -39,6 +39,9 @@ typedef OnToggleTodoDone(
 typedef OnAuthenticateUser(
   String email,
   String password,
-  OnSuccess onSuccess,
   OnError onError,
+);
+
+typedef OnLogOut(
+  OnSuccess onSuccess,
 );
