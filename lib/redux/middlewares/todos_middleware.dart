@@ -63,44 +63,51 @@ Future _loadTodos(
     // action.onError(error);
     store.dispatch(TodosNotLoadedAction());
   }
-
-  // final todos = await Future.delayed(
-  //     Duration(seconds: 3),
-  //     () => [
-  //           Todo(id: '1', title: 'Todo 1', userId: 'userId'),
-  //           Todo(id: '2', title: 'Todo 2', userId: 'userId'),
-  //           Todo(id: '3', title: 'Todo 3', userId: 'userId'),
-  //           Todo(id: '4', title: 'Todo 4', userId: 'userId'),
-  //           Todo(id: '5', title: 'Todo 5', userId: 'userId'),
-  //         ]);
-
-  // store.dispatch(TodosLoadedAction(todos));
 }
 
 Future _createTodo(
     Store<AppState> store, CreateTodoAction action, NextDispatcher next) async {
   next(action);
 
-  print('_createTodo');
-  print(action.priority);
+  final User user = store.state.user;
+  final Map<String, dynamic> formData = {
+    'title': action.title,
+    'content': action.content,
+    'priority': action.priority.toString(),
+    'isDone': action.isDone,
+    'userId': user.id,
+  };
 
-  final todo = await Future.delayed(
-    Duration(seconds: 3),
-    () => Todo(
-          id: '6',
-          title: action.title,
-          content: action.content,
-          priority: action.priority,
-          isDone: action.isDone,
-          userId: action.userId,
-        ),
-  );
+  try {
+    final http.Response response = await http.post(
+      '${Configure.FirebaseUrl}/todos.json?auth=${user.token}',
+      body: json.encode(formData),
+    );
 
-  store.dispatch(TodoCreatedAction(todo));
-  action.onSuccess();
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      action.onError('Failed to create new todo.');
+      store.dispatch(TodoNotCreatedAction());
 
-  // action.onError();
-  // store.dispatch(TodoNotCreatedAction());
+      return;
+    }
+
+    final Map<String, dynamic> responseData = json.decode(response.body);
+
+    Todo todo = Todo(
+      id: responseData['name'],
+      title: action.title,
+      content: action.content,
+      priority: action.priority,
+      isDone: action.isDone,
+      userId: user.id,
+    );
+
+    store.dispatch(TodoCreatedAction(todo));
+    action.onSuccess();
+  } catch (error) {
+    action.onError(error);
+    store.dispatch(TodoNotCreatedAction());
+  }
 }
 
 Future _updateTodo(
