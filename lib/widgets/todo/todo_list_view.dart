@@ -72,7 +72,7 @@ class _TodoListViewState extends State<TodoListView> {
           key: Key(todo.id),
           onDismissed: (DismissDirection direction) {
             widget.onDelete(
-              todo.id,
+              todo,
               _onError,
             );
           },

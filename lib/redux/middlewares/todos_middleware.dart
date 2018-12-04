@@ -150,12 +150,22 @@ Future _deleteTodo(
     Store<AppState> store, DeleteTodoAction action, NextDispatcher next) async {
   next(action);
 
-  store.dispatch(TodoDeletedAction(action.id));
+  store.dispatch(TodoDeletedAction(action.todo));
 
-  await Future.delayed(Duration(seconds: 3));
+  try {
+    final User user = store.state.user;
 
-  // store.dispatch(TodoNotDeletedAction());
-  // action.onError("Fail to delete todo.");
+    final http.Response response = await http.delete(
+        '${Configure.FirebaseUrl}/todos/${action.todo.id}.json?auth=${user.token}');
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      store.dispatch(TodoNotDeletedAction(action.todo));
+      action.onError('Failed to delete todo.');
+    }
+  } catch (error) {
+    store.dispatch(TodoNotDeletedAction(action.todo));
+    action.onError(error);
+  }
 }
 
 Future _toggleTodoDone(Store<AppState> store, ToggleTodoDoneAction action,

@@ -22,13 +22,9 @@ final loadingReducer = combineReducers<bool>([
 ]);
 
 bool _setLoadingTrue(bool isLoading, dynamic action) {
-  print('_setLoadingTrue');
-
   return true;
 }
 
 bool _setLoadingFalse(bool isLoading, dynamic action) {
-  print('_setLoadingFalse');
-
   return false;
 }

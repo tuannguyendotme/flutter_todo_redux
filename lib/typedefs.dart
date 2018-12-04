@@ -27,7 +27,7 @@ typedef OnUpdateTodo(
 );
 
 typedef OnDeleteTodo(
-  String id,
+  Todo todo,
   OnError onError,
 );
 

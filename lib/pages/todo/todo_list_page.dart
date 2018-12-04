@@ -124,8 +124,8 @@ class _ViewModel {
       todos: state.todos,
       isLoading: state.isLoading,
       isShortcutsEnabled: state.settings.isShortcutsEnabled,
-      onDelete: (String id, OnError onError) {
-        store.dispatch(DeleteTodoAction(id, onError));
+      onDelete: (Todo todo, OnError onError) {
+        store.dispatch(DeleteTodoAction(todo, onError));
       },
       onToggle: (Todo todo, OnError onError) {
         store.dispatch(ToggleTodoDoneAction(todo, onError));

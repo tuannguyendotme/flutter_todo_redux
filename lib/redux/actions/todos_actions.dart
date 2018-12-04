@@ -61,19 +61,23 @@ class TodoUpdatedAction {
 class TodoNotUpdatedAction {}
 
 class DeleteTodoAction {
-  final String id;
+  final Todo todo;
   final OnError onError;
 
-  DeleteTodoAction(this.id, this.onError);
+  DeleteTodoAction(this.todo, this.onError);
 }
 
 class TodoDeletedAction {
-  final String id;
+  final Todo todo;
 
-  TodoDeletedAction(this.id);
+  TodoDeletedAction(this.todo);
 }
 
-class TodoNotDeletedAction {}
+class TodoNotDeletedAction {
+  final Todo todo;
+
+  TodoNotDeletedAction(this.todo);
+}
 
 class ToggleTodoDoneAction {
   final Todo todo;
