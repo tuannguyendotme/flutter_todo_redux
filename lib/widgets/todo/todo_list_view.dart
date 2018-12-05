@@ -9,11 +9,13 @@ import 'package:flutter_todo/typedefs.dart';
 
 class TodoListView extends StatefulWidget {
   final List<Todo> todos;
+  final OnCreateTodo onCreate;
   final OnDeleteTodo onDelete;
   final OnToggleTodoDone onToggle;
 
   TodoListView(
     this.todos,
+    this.onCreate,
     this.onDelete,
     this.onToggle,
   );
@@ -73,6 +75,7 @@ class _TodoListViewState extends State<TodoListView> {
           onDismissed: (DismissDirection direction) {
             widget.onDelete(
               todo,
+              _onSuccess,
               _onError,
             );
           },
@@ -81,6 +84,25 @@ class _TodoListViewState extends State<TodoListView> {
         );
       },
     );
+  }
+
+  void _onSuccess(Todo todo) {
+    Scaffold.of(context).showSnackBar(new SnackBar(
+      content: new Text("Todo deleted"),
+      action: new SnackBarAction(
+        label: "UNDO",
+        onPressed: () {
+          widget.onCreate(
+            todo.title,
+            todo.content,
+            todo.priority,
+            todo.isDone,
+            () {},
+            _onError,
+          );
+        },
+      ),
+    ));
   }
 
   void _onError(String message) {

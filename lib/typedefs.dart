@@ -9,6 +9,8 @@ typedef OnPrioritySelected(Priority priority);
 
 typedef OnSuccess();
 
+typedef OnDeleteSuccess(Todo todo);
+
 typedef OnError(String message);
 
 typedef OnCreateTodo(
@@ -28,6 +30,7 @@ typedef OnUpdateTodo(
 
 typedef OnDeleteTodo(
   Todo todo,
+  OnDeleteSuccess onSuccess,
   OnError onError,
 );
 

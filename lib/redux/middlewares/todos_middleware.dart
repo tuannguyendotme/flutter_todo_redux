@@ -22,7 +22,10 @@ List<Middleware<AppState>> createTodosMiddleware() {
 }
 
 Future _loadTodos(
-    Store<AppState> store, LoadTodosAction action, NextDispatcher next) async {
+  Store<AppState> store,
+  LoadTodosAction action,
+  NextDispatcher next,
+) async {
   print('_loadTodos - Middleware');
 
   next(action);
@@ -66,7 +69,10 @@ Future _loadTodos(
 }
 
 Future _createTodo(
-    Store<AppState> store, CreateTodoAction action, NextDispatcher next) async {
+  Store<AppState> store,
+  CreateTodoAction action,
+  NextDispatcher next,
+) async {
   next(action);
 
   final User user = store.state.user;
@@ -111,7 +117,10 @@ Future _createTodo(
 }
 
 Future _updateTodo(
-    Store<AppState> store, UpdateTodoAction action, NextDispatcher next) async {
+  Store<AppState> store,
+  UpdateTodoAction action,
+  NextDispatcher next,
+) async {
   next(action);
 
   final User user = store.state.user;
@@ -147,7 +156,10 @@ Future _updateTodo(
 }
 
 Future _deleteTodo(
-    Store<AppState> store, DeleteTodoAction action, NextDispatcher next) async {
+  Store<AppState> store,
+  DeleteTodoAction action,
+  NextDispatcher next,
+) async {
   next(action);
 
   store.dispatch(TodoDeletedAction(action.todo));
@@ -161,15 +173,22 @@ Future _deleteTodo(
     if (response.statusCode != 200 && response.statusCode != 201) {
       store.dispatch(TodoNotDeletedAction(action.todo));
       action.onError('Failed to delete todo.');
+
+      return;
     }
+
+    action.onSuccess(action.todo);
   } catch (error) {
     store.dispatch(TodoNotDeletedAction(action.todo));
     action.onError(error);
   }
 }
 
-Future _toggleTodoDone(Store<AppState> store, ToggleTodoDoneAction action,
-    NextDispatcher next) async {
+Future _toggleTodoDone(
+  Store<AppState> store,
+  ToggleTodoDoneAction action,
+  NextDispatcher next,
+) async {
   next(action);
 
   final todo = await Future.delayed(

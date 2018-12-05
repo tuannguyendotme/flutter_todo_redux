@@ -62,9 +62,10 @@ class TodoNotUpdatedAction {}
 
 class DeleteTodoAction {
   final Todo todo;
+  final OnDeleteSuccess onSuccess;
   final OnError onError;
 
-  DeleteTodoAction(this.todo, this.onError);
+  DeleteTodoAction(this.todo, this.onSuccess, this.onError);
 }
 
 class TodoDeletedAction {

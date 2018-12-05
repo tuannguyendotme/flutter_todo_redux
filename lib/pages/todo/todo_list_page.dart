@@ -6,6 +6,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_todo/typedefs.dart';
 import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/models/app_state.dart';
+import 'package:flutter_todo/models/priority.dart';
 import 'package:flutter_todo/models/todo.dart';
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
 import 'package:flutter_todo/redux/actions/user_actions.dart';
@@ -93,6 +94,7 @@ class TodoListPage extends StatelessWidget {
           _buildFloatingActionButton(context, vm.isShortcutsEnabled),
       body: TodoListView(
         vm.todos,
+        vm.onCreate,
         vm.onDelete,
         vm.onToggle,
       ),
@@ -104,6 +106,7 @@ class _ViewModel {
   final List<Todo> todos;
   final bool isLoading;
   final bool isShortcutsEnabled;
+  final OnCreateTodo onCreate;
   final OnDeleteTodo onDelete;
   final OnToggleTodoDone onToggle;
   final OnLogOut onLogOut;
@@ -112,6 +115,7 @@ class _ViewModel {
     @required this.todos,
     @required this.isLoading,
     @required this.isShortcutsEnabled,
+    @required this.onCreate,
     @required this.onDelete,
     @required this.onToggle,
     @required this.onLogOut,
@@ -124,8 +128,26 @@ class _ViewModel {
       todos: state.todos,
       isLoading: state.isLoading,
       isShortcutsEnabled: state.settings.isShortcutsEnabled,
-      onDelete: (Todo todo, OnError onError) {
-        store.dispatch(DeleteTodoAction(todo, onError));
+      onCreate: (
+        String title,
+        String content,
+        Priority priority,
+        bool isDone,
+        OnSuccess onSuccess,
+        OnError onError,
+      ) {
+        store.dispatch(CreateTodoAction(
+          title,
+          content,
+          priority,
+          isDone,
+          store.state.user.id,
+          onSuccess,
+          onError,
+        ));
+      },
+      onDelete: (Todo todo, OnDeleteSuccess onSuccess, OnError onError) {
+        store.dispatch(DeleteTodoAction(todo, onSuccess, onError));
       },
       onToggle: (Todo todo, OnError onError) {
         store.dispatch(ToggleTodoDoneAction(todo, onError));
