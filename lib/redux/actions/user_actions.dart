@@ -20,9 +20,7 @@ class UserAuthenticatedAction {
 }
 
 class UserNotAuthenticatedAction {
-  final String message;
-
-  UserNotAuthenticatedAction(this.message);
+  UserNotAuthenticatedAction();
 }
 
 class UserLogOutAction {
@@ -32,3 +30,25 @@ class UserLogOutAction {
 }
 
 class UserLoggedOutAction {}
+
+class UserRegisterAction {
+  final String email;
+  final String password;
+  final OnSuccess onSuccess;
+  final OnError onError;
+
+  UserRegisterAction(
+    this.email,
+    this.password,
+    this.onSuccess,
+    this.onError,
+  );
+}
+
+class UserRegisteredAction {
+  final User user;
+
+  UserRegisteredAction(this.user);
+}
+
+class UserNotRegisteredAction {}

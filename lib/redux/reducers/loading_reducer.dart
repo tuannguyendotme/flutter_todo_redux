@@ -20,6 +20,9 @@ final loadingReducer = combineReducers<bool>([
   TypedReducer<bool, UserAuthenticateAction>(_setLoadingTrue),
   TypedReducer<bool, UserAuthenticatedAction>(_setLoadingFalse),
   TypedReducer<bool, UserNotAuthenticatedAction>(_setLoadingFalse),
+  TypedReducer<bool, UserRegisterAction>(_setLoadingTrue),
+  TypedReducer<bool, UserRegisteredAction>(_setLoadingFalse),
+  TypedReducer<bool, UserNotRegisteredAction>(_setLoadingFalse),
 ]);
 
 bool _setLoadingTrue(bool isLoading, dynamic action) {

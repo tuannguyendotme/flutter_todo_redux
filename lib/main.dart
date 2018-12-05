@@ -18,6 +18,7 @@ import 'package:flutter_todo/pages/todo/todo_list_page.dart';
 import 'package:flutter_todo/pages/todo/todo_editor_page.dart';
 import 'package:flutter_todo/pages/settings/settings_page.dart';
 import 'package:flutter_todo/pages/auth/auth_page.dart';
+import 'package:flutter_todo/pages/register/register_page.dart';
 
 void main() async {
   final User user = await _autoAuthenticate();
@@ -119,6 +120,7 @@ class _TodoAppState extends State<TodoApp> {
                   ),
               '/settings': (BuildContext context) =>
                   widget.store.state.user != null ? SettingsPage() : AuthPage(),
+              '/register': (BuildContext context) => RegisterPage(),
             },
             onGenerateRoute: (RouteSettings settings) {
               final List<String> pathElements = settings.name.split('/');

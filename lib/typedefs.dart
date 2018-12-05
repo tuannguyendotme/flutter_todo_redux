@@ -48,3 +48,10 @@ typedef OnAuthenticateUser(
 typedef OnLogOut(
   OnSuccess onSuccess,
 );
+
+typedef OnRegisterUser(
+  String email,
+  String password,
+  OnSuccess onSuccess,
+  OnError onError,
+);

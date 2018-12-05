@@ -26,8 +26,6 @@ Future _loadTodos(
   LoadTodosAction action,
   NextDispatcher next,
 ) async {
-  print('_loadTodos - Middleware');
-
   next(action);
 
   final User user = store.state.user;

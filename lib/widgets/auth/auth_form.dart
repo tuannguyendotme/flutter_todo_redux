@@ -11,9 +11,7 @@ class AuthForm extends StatefulWidget {
   AuthForm(this.onAuthenticate);
 
   @override
-  State<StatefulWidget> createState() {
-    return _AuthFormState();
-  }
+  State<StatefulWidget> createState() => _AuthFormState();
 }
 
 class _AuthFormState extends State<AuthForm> {
@@ -70,7 +68,7 @@ class _AuthFormState extends State<AuthForm> {
     widget.onAuthenticate(
       _formData['email'],
       _formData['password'],
-      this._onError,
+      _onError,
     );
   }
 
