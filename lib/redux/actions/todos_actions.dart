@@ -92,3 +92,5 @@ class TodoDoneToggledAction {
 
   TodoDoneToggledAction(this.todo);
 }
+
+class TodoDoneNotToggledAction {}

@@ -16,6 +16,7 @@ final loadingReducer = combineReducers<bool>([
   TypedReducer<bool, TodoDeletedAction>(_setLoadingFalse),
   TypedReducer<bool, ToggleTodoDoneAction>(_setLoadingTrue),
   TypedReducer<bool, TodoDoneToggledAction>(_setLoadingFalse),
+  TypedReducer<bool, TodoDoneNotToggledAction>(_setLoadingFalse),
   TypedReducer<bool, UserAuthenticateAction>(_setLoadingTrue),
   TypedReducer<bool, UserAuthenticatedAction>(_setLoadingFalse),
   TypedReducer<bool, UserNotAuthenticatedAction>(_setLoadingFalse),

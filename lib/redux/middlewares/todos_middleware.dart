@@ -164,9 +164,9 @@ Future _deleteTodo(
 
   store.dispatch(TodoDeletedAction(action.todo));
 
-  try {
-    final User user = store.state.user;
+  final User user = store.state.user;
 
+  try {
     final http.Response response = await http.delete(
         '${Configure.FirebaseUrl}/todos/${action.todo.id}.json?auth=${user.token}');
 
@@ -191,15 +191,35 @@ Future _toggleTodoDone(
 ) async {
   next(action);
 
-  final todo = await Future.delayed(
-    Duration(seconds: 3),
-    () => action.todo.copyWith(isDone: !action.todo.isDone),
-  );
+  final User user = store.state.user;
+  Todo todo = action.todo;
 
-  store.dispatch(TodoDoneToggledAction(todo));
+  final Map<String, dynamic> formData = {
+    'title': todo.title,
+    'content': todo.content,
+    'priority': todo.priority.toString(),
+    'isDone': !todo.isDone,
+    'userId': user.id,
+  };
 
-  // action.onError();
-  // store.dispatch(TodoNotUpdatedAction());
+  try {
+    final http.Response response = await http.put(
+      '${Configure.FirebaseUrl}/todos/${todo.id}.json?auth=${user.token}',
+      body: json.encode(formData),
+    );
+
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      action.onError('Fail to toggle todo\'s status');
+      store.dispatch(TodoDoneNotToggledAction());
+
+      return;
+    }
+
+    store.dispatch(TodoDoneToggledAction(action.todo));
+  } catch (error) {
+    action.onError(error);
+    store.dispatch(TodoDoneNotToggledAction());
+  }
 }
 
 // List<Middleware<AppState>> createTodosMiddleware() {
