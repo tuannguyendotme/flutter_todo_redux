@@ -45,9 +45,7 @@ typedef OnAuthenticateUser(
   OnError onError,
 );
 
-typedef OnLogOut(
-  OnSuccess onSuccess,
-);
+typedef OnLogOut();
 
 typedef OnRegisterUser(
   String email,

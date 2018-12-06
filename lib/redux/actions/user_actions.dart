@@ -23,11 +23,7 @@ class UserNotAuthenticatedAction {
   UserNotAuthenticatedAction();
 }
 
-class UserLogOutAction {
-  final OnSuccess onSuccess;
-
-  UserLogOutAction(this.onSuccess);
-}
+class UserLogOutAction {}
 
 class UserLoggedOutAction {}
 

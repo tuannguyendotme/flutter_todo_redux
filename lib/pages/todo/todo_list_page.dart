@@ -41,21 +41,20 @@ class TodoListPage extends StatelessWidget {
       title: Text(Configure.AppName),
       backgroundColor: Colors.blue,
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.lock),
-          onPressed: () async {
-            bool confirm = await ConfirmDialog.show(context);
-
-            if (confirm) {
-              vm.onLogOut(() => Navigator.pushReplacementNamed(context, '/'));
-            }
-          },
-        ),
         PopupMenuButton<String>(
-          onSelected: (String choice) {
+          onSelected: (String choice) async {
             switch (choice) {
               case 'Settings':
                 Navigator.pushNamed(context, '/settings');
+                break;
+
+              case 'LogOut':
+                bool confirm = await ConfirmDialog.show(context);
+
+                if (confirm) {
+                  vm.onLogOut();
+                }
+                break;
             }
           },
           itemBuilder: (BuildContext context) {
@@ -63,7 +62,11 @@ class TodoListPage extends StatelessWidget {
               PopupMenuItem<String>(
                 value: 'Settings',
                 child: Text('Settings'),
-              )
+              ),
+              PopupMenuItem<String>(
+                value: 'LogOut',
+                child: Text('Log out'),
+              ),
             ];
           },
         ),
@@ -152,8 +155,8 @@ class _ViewModel {
       onToggle: (Todo todo, OnError onError) {
         store.dispatch(ToggleTodoDoneAction(todo, onError));
       },
-      onLogOut: (OnSuccess onSuccess) {
-        store.dispatch(UserLogOutAction(onSuccess));
+      onLogOut: () {
+        store.dispatch(UserLogOutAction());
       },
     );
   }

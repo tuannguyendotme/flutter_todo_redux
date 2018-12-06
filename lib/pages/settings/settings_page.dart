@@ -28,16 +28,27 @@ class SettingsPage extends StatelessWidget {
       title: Text('Settings'),
       backgroundColor: Colors.blue,
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.lock),
-          onPressed: () async {
-            bool confirm = await ConfirmDialog.show(context);
+        PopupMenuButton<String>(
+          onSelected: (String choice) async {
+            switch (choice) {
+              case 'LogOut':
+                bool confirm = await ConfirmDialog.show(context);
 
-            if (confirm) {
-              Navigator.pop(context);
+                if (confirm) {
+                  Navigator.pop(context);
 
-              vm.onLogOut(() => Navigator.pushReplacementNamed(context, '/'));
+                  vm.onLogOut();
+                }
+                break;
             }
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem<String>(
+                value: 'LogOut',
+                child: Text('Log out'),
+              ),
+            ];
           },
         ),
       ],
@@ -100,8 +111,8 @@ class _ViewModel {
       toggleDarkThemeUsed: () {
         store.dispatch(ToggleDarkThemeUsedSettingAction());
       },
-      onLogOut: (OnSuccess onSuccess) {
-        store.dispatch(UserLogOutAction(onSuccess));
+      onLogOut: () {
+        store.dispatch(UserLogOutAction());
       },
     );
   }

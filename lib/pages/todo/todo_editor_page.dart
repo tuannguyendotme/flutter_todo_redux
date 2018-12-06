@@ -32,6 +32,7 @@ class TodoEditorPage extends StatelessWidget {
               vm.user,
               vm.onCreate,
               vm.onUpdate,
+              vm.onLogOut,
             ),
           ],
         );
@@ -101,8 +102,8 @@ class _ViewModel {
           onError,
         ));
       },
-      onLogOut: (OnSuccess onSuccess) {
-        store.dispatch(UserLogOutAction(onSuccess));
+      onLogOut: () {
+        store.dispatch(UserLogOutAction());
       },
     );
   }

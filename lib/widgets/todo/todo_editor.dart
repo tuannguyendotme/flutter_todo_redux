@@ -17,6 +17,7 @@ class TodoEditor extends StatefulWidget {
   final User user;
   final OnCreateTodo onCreateTodo;
   final OnUpdateTodo onUpdateTodo;
+  final OnLogOut onLogOut;
 
   TodoEditor(
     this.todo,
@@ -24,6 +25,7 @@ class TodoEditor extends StatefulWidget {
     this.user,
     this.onCreateTodo,
     this.onUpdateTodo,
+    this.onLogOut,
   );
 
   @override
@@ -46,14 +48,35 @@ class _TodoEditorState extends State<TodoEditor> {
       title: Text(Configure.AppName),
       backgroundColor: Colors.blue,
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.lock),
-          onPressed: () async {
-            bool confirm = await ConfirmDialog.show(context);
+        PopupMenuButton<String>(
+          onSelected: (String choice) async {
+            switch (choice) {
+              case 'Settings':
+                Navigator.pushNamed(context, '/settings');
+                break;
 
-            if (confirm) {
-              Navigator.pop(context);
+              case 'LogOut':
+                bool confirm = await ConfirmDialog.show(context);
+
+                if (confirm) {
+                  Navigator.pop(context);
+
+                  widget.onLogOut();
+                }
+                break;
             }
+          },
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem<String>(
+                value: 'Settings',
+                child: Text('Settings'),
+              ),
+              PopupMenuItem<String>(
+                value: 'LogOut',
+                child: Text('Log out'),
+              ),
+            ];
           },
         ),
       ],
