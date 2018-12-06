@@ -47,15 +47,18 @@ class TodoListPage extends StatelessWidget {
           icon: Icon(Icons.filter_list),
           itemBuilder: (BuildContext context) {
             return [
-              PopupMenuItem<Filter>(
+              CheckedPopupMenuItem<Filter>(
+                checked: vm.filter == Filter.All,
                 value: Filter.All,
                 child: Text('All'),
               ),
-              PopupMenuItem<Filter>(
+              CheckedPopupMenuItem<Filter>(
+                checked: vm.filter == Filter.Done,
                 value: Filter.Done,
                 child: Text('Done'),
               ),
-              PopupMenuItem<Filter>(
+              CheckedPopupMenuItem<Filter>(
+                checked: vm.filter == Filter.NotDone,
                 value: Filter.NotDone,
                 child: Text('Not Done'),
               ),
