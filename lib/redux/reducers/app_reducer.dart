@@ -4,6 +4,7 @@ import 'package:flutter_todo/redux/reducers/loading_reducer.dart';
 import 'package:flutter_todo/redux/reducers/todos_reducer.dart';
 import 'package:flutter_todo/redux/reducers/settings_reducer.dart';
 import 'package:flutter_todo/redux/reducers/user_reducer.dart';
+import 'package:flutter_todo/redux/reducers/filter_reducer.dart';
 
 AppState appReducer(AppState state, dynamic action) {
   return AppState(
@@ -11,5 +12,6 @@ AppState appReducer(AppState state, dynamic action) {
     todos: todosReducer(state.todos, action),
     settings: settingsReducer(state.settings, action),
     user: userReducer(state.user, action),
+    filter: filterReducer(state.filter, action),
   );
 }

@@ -1,3 +1,4 @@
+import 'package:flutter_todo/models/filter.dart';
 import 'package:flutter_todo/models/priority.dart';
 import 'package:flutter_todo/models/todo.dart';
 
@@ -52,4 +53,8 @@ typedef OnRegisterUser(
   String password,
   OnSuccess onSuccess,
   OnError onError,
+);
+
+typedef OnFilter(
+  Filter filter,
 );

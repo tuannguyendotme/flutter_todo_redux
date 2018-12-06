@@ -9,6 +9,7 @@ import 'package:flutter_todo/app_builder.dart';
 import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/user.dart';
 import 'package:flutter_todo/models/settings.dart';
+import 'package:flutter_todo/models/filter.dart';
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
 import 'package:flutter_todo/redux/reducers/app_reducer.dart';
 import 'package:flutter_todo/redux/middlewares/todos_middleware.dart';
@@ -29,6 +30,7 @@ void main() async {
     initialState: AppState(
       settings: settings,
       user: user,
+      filter: Filter.All,
     ),
     middleware: []
       ..addAll(createTodosMiddleware())

@@ -8,8 +8,10 @@ import 'package:flutter_todo/.env.dart';
 import 'package:flutter_todo/models/app_state.dart';
 import 'package:flutter_todo/models/priority.dart';
 import 'package:flutter_todo/models/todo.dart';
+import 'package:flutter_todo/models/filter.dart';
 import 'package:flutter_todo/redux/actions/todos_actions.dart';
 import 'package:flutter_todo/redux/actions/user_actions.dart';
+import 'package:flutter_todo/redux/actions/filter_actions.dart';
 import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
 import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
 import 'package:flutter_todo/widgets/todo/shortcuts_enabled_todo_fab.dart';
@@ -41,6 +43,28 @@ class TodoListPage extends StatelessWidget {
       title: Text(Configure.AppName),
       backgroundColor: Colors.blue,
       actions: <Widget>[
+        PopupMenuButton<Filter>(
+          icon: Icon(Icons.filter_list),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem<Filter>(
+                value: Filter.All,
+                child: Text('All'),
+              ),
+              PopupMenuItem<Filter>(
+                value: Filter.Done,
+                child: Text('Done'),
+              ),
+              PopupMenuItem<Filter>(
+                value: Filter.NotDone,
+                child: Text('Not Done'),
+              ),
+            ];
+          },
+          onSelected: (Filter filter) {
+            vm.onFilter(filter);
+          },
+        ),
         PopupMenuButton<String>(
           onSelected: (String choice) async {
             switch (choice) {
@@ -96,7 +120,11 @@ class TodoListPage extends StatelessWidget {
       floatingActionButton:
           _buildFloatingActionButton(context, vm.isShortcutsEnabled),
       body: TodoListView(
-        vm.todos,
+        vm.filter == Filter.All
+            ? vm.todos
+            : vm.todos
+                .where((todo) => todo.isDone == (vm.filter == Filter.Done))
+                .toList(),
         vm.onCreate,
         vm.onDelete,
         vm.onToggle,
@@ -108,56 +136,63 @@ class TodoListPage extends StatelessWidget {
 class _ViewModel {
   final List<Todo> todos;
   final bool isLoading;
+  final Filter filter;
   final bool isShortcutsEnabled;
   final OnCreateTodo onCreate;
   final OnDeleteTodo onDelete;
   final OnToggleTodoDone onToggle;
   final OnLogOut onLogOut;
+  final OnFilter onFilter;
 
   _ViewModel({
     @required this.todos,
     @required this.isLoading,
+    @required this.filter,
     @required this.isShortcutsEnabled,
     @required this.onCreate,
     @required this.onDelete,
     @required this.onToggle,
     @required this.onLogOut,
+    @required this.onFilter,
   });
 
   factory _ViewModel.from(Store<AppState> store) {
     final AppState state = store.state;
 
     return _ViewModel(
-      todos: state.todos,
-      isLoading: state.isLoading,
-      isShortcutsEnabled: state.settings.isShortcutsEnabled,
-      onCreate: (
-        String title,
-        String content,
-        Priority priority,
-        bool isDone,
-        OnSuccess onSuccess,
-        OnError onError,
-      ) {
-        store.dispatch(CreateTodoAction(
-          title,
-          content,
-          priority,
-          isDone,
-          store.state.user.id,
-          onSuccess,
-          onError,
-        ));
-      },
-      onDelete: (Todo todo, OnDeleteSuccess onSuccess, OnError onError) {
-        store.dispatch(DeleteTodoAction(todo, onSuccess, onError));
-      },
-      onToggle: (Todo todo, OnError onError) {
-        store.dispatch(ToggleTodoDoneAction(todo, onError));
-      },
-      onLogOut: () {
-        store.dispatch(UserLogOutAction());
-      },
-    );
+        todos: state.todos,
+        isLoading: state.isLoading,
+        filter: state.filter,
+        isShortcutsEnabled: state.settings.isShortcutsEnabled,
+        onCreate: (
+          String title,
+          String content,
+          Priority priority,
+          bool isDone,
+          OnSuccess onSuccess,
+          OnError onError,
+        ) {
+          store.dispatch(CreateTodoAction(
+            title,
+            content,
+            priority,
+            isDone,
+            store.state.user.id,
+            onSuccess,
+            onError,
+          ));
+        },
+        onDelete: (Todo todo, OnDeleteSuccess onSuccess, OnError onError) {
+          store.dispatch(DeleteTodoAction(todo, onSuccess, onError));
+        },
+        onToggle: (Todo todo, OnError onError) {
+          store.dispatch(ToggleTodoDoneAction(todo, onError));
+        },
+        onLogOut: () {
+          store.dispatch(UserLogOutAction());
+        },
+        onFilter: (Filter filter) {
+          store.dispatch(ApplyFilterAction(filter));
+        });
   }
 }

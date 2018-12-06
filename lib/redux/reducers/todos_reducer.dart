@@ -15,8 +15,6 @@ final todosReducer = combineReducers<List<Todo>>([
 ]);
 
 List<Todo> _setTodos(List<Todo> todos, TodosLoadedAction action) {
-  print('_setTodos - TodosLoadedAction');
-
   return action.todos;
 }
 
