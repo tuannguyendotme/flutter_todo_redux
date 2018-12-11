@@ -131,6 +131,12 @@ class _TodoAppState extends State<TodoApp> {
                 return null;
               }
 
+              if (widget.store.state.user == null) {
+                return MaterialPageRoute<bool>(
+                  builder: (BuildContext context) => AuthPage(),
+                );
+              }
+
               if (pathElements[1] == 'editor') {
                 final String todoId =
                     pathElements.length >= 3 ? pathElements[2] : null;

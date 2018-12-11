@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter_todo/redux/actions/user_actions.dart';
 import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
@@ -35,6 +36,12 @@ Future _loadTodos(
         '${Configure.FirebaseUrl}/todos.json?auth=${user.token}&orderBy="userId"&equalTo="${user.id}"');
 
     if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode == 401) {
+        store.dispatch(RefreshTokenAction(action));
+
+        return;
+      }
+
       // action.onError('Fail to load todos.');
       store.dispatch(TodosNotLoadedAction());
 
@@ -89,6 +96,12 @@ Future _createTodo(
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode == 401) {
+        store.dispatch(RefreshTokenAction(action));
+
+        return;
+      }
+
       action.onError('Failed to create new todo.');
       store.dispatch(TodoNotCreatedAction());
 
@@ -139,6 +152,12 @@ Future _updateTodo(
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode == 401) {
+        store.dispatch(RefreshTokenAction(action));
+
+        return;
+      }
+
       action.onError('Failed to update todo.');
       store.dispatch(TodoNotUpdatedAction());
 
@@ -169,6 +188,12 @@ Future _deleteTodo(
         '${Configure.FirebaseUrl}/todos/${action.todo.id}.json?auth=${user.token}');
 
     if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode == 401) {
+        store.dispatch(RefreshTokenAction(action));
+
+        return;
+      }
+
       store.dispatch(TodoNotDeletedAction(action.todo));
       action.onError('Failed to delete todo.');
 
@@ -207,6 +232,12 @@ Future _toggleTodoDone(
     );
 
     if (response.statusCode != 200 && response.statusCode != 201) {
+      if (response.statusCode == 401) {
+        store.dispatch(RefreshTokenAction(action));
+
+        return;
+      }
+
       action.onError('Fail to toggle todo\'s status');
       store.dispatch(TodoDoneNotToggledAction());
 

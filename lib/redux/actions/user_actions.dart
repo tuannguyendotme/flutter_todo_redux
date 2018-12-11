@@ -48,3 +48,9 @@ class UserRegisteredAction {
 }
 
 class UserNotRegisteredAction {}
+
+class RefreshTokenAction {
+  final dynamic previousAction;
+
+  RefreshTokenAction(this.previousAction);
+}

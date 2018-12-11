@@ -15,6 +15,7 @@ List<Middleware<AppState>> createUserMiddleware() {
     TypedMiddleware<AppState, UserAuthenticateAction>(_authenticate),
     TypedMiddleware<AppState, UserLogOutAction>(_logOut),
     TypedMiddleware<AppState, UserRegisterAction>(_register),
+    TypedMiddleware<AppState, RefreshTokenAction>(_refreshToken),
   ];
 }
 
@@ -23,8 +24,6 @@ Future _authenticate(
   UserAuthenticateAction action,
   NextDispatcher next,
 ) async {
-  print('_authenticate - Middleware');
-
   next(action);
 
   final Map<String, dynamic> formData = {
@@ -154,4 +153,51 @@ Future _register(Store<AppState> store, UserRegisterAction action,
     store.dispatch(UserNotRegisteredAction());
     action.onError(error);
   }
+}
+
+Future _refreshToken(
+  Store<AppState> store,
+  RefreshTokenAction action,
+  NextDispatcher next,
+) async {
+  final prefs = await SharedPreferences.getInstance();
+  final refreshToken = prefs.getString('refreshToken');
+
+  final Map<String, dynamic> formData = {
+    'grant_type': 'refresh_token',
+    'refresh_token': refreshToken
+  };
+
+  try {
+    final http.Response response = await http.post(
+      'https://securetoken.googleapis.com/v1/token?key=${Configure.ApiKey}',
+      body: json.encode(formData),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    final Map<String, dynamic> responseData = json.decode(response.body);
+
+    if (responseData.containsKey('id_token')) {
+      final User user = User(
+        id: prefs.getString('userId'),
+        email: prefs.getString('email'),
+        token: responseData['id_token'],
+      );
+
+      final DateTime now = DateTime.now();
+      final DateTime expiryTime =
+          now.add(Duration(seconds: int.parse(responseData['expires_in'])));
+
+      prefs.setString('token', responseData['id_token']);
+      prefs.setString('expiryTime', expiryTime.toIso8601String());
+      prefs.setString('refreshToken', responseData['refresh_token']);
+
+      store.dispatch(UserAuthenticatedAction(user));
+      store.dispatch(action.previousAction);
+
+      return;
+    }
+  } catch (error) {}
+
+  store.dispatch(UserLogOutAction());
 }
