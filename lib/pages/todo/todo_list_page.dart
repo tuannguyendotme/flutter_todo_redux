@@ -3,19 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:flutter_todo/typedefs.dart';
-import 'package:flutter_todo/.env.dart';
-import 'package:flutter_todo/models/app_state.dart';
-import 'package:flutter_todo/models/priority.dart';
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/models/filter.dart';
-import 'package:flutter_todo/redux/actions/todos_actions.dart';
-import 'package:flutter_todo/redux/actions/user_actions.dart';
-import 'package:flutter_todo/redux/actions/filter_actions.dart';
-import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
-import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
-import 'package:flutter_todo/widgets/todo/shortcuts_enabled_todo_fab.dart';
-import 'package:flutter_todo/widgets/todo/todo_list_view.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
+import 'package:flutter_todo_redux/.env.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/models/priority.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
+import 'package:flutter_todo_redux/models/filter.dart';
+import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/user_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/filter_actions.dart';
+import 'package:flutter_todo_redux/widgets/helpers/confirm_dialog.dart';
+import 'package:flutter_todo_redux/widgets/ui_elements/loading_modal.dart';
+import 'package:flutter_todo_redux/widgets/todo/shortcuts_enabled_todo_fab.dart';
+import 'package:flutter_todo_redux/widgets/todo/todo_list_view.dart';
 
 class TodoListPage extends StatelessWidget {
   @override

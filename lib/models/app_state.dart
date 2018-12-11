@@ -1,7 +1,7 @@
-import 'package:flutter_todo/models/filter.dart';
-import 'package:flutter_todo/models/settings.dart';
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/models/user.dart';
+import 'package:flutter_todo_redux/models/filter.dart';
+import 'package:flutter_todo_redux/models/settings.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
+import 'package:flutter_todo_redux/models/user.dart';
 
 class AppState {
   final bool isLoading;

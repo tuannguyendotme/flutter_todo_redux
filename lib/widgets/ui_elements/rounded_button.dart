@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_todo/typedefs.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
 
 class RoundedButton extends StatelessWidget {
   final String label;

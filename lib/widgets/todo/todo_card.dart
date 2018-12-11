@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_todo/typedefs.dart';
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
+import 'package:flutter_todo_redux/widgets/helpers/priority_helper.dart';
 
 class TodoCard extends StatelessWidget {
   final Todo todo;

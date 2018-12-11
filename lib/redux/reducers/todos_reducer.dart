@@ -1,8 +1,8 @@
 import 'package:redux/redux.dart';
 
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/redux/actions/todos_actions.dart';
-import 'package:flutter_todo/redux/actions/user_actions.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
+import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/user_actions.dart';
 
 final todosReducer = combineReducers<List<Todo>>([
   TypedReducer<List<Todo>, TodosLoadedAction>(_setTodos),

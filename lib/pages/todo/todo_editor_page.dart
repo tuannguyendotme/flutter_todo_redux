@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:flutter_todo/typedefs.dart';
-import 'package:flutter_todo/models/app_state.dart';
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/models/priority.dart';
-import 'package:flutter_todo/models/user.dart';
-import 'package:flutter_todo/redux/actions/user_actions.dart';
-import 'package:flutter_todo/redux/actions/todos_actions.dart';
-import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
-import 'package:flutter_todo/widgets/todo/todo_editor.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
+import 'package:flutter_todo_redux/models/priority.dart';
+import 'package:flutter_todo_redux/models/user.dart';
+import 'package:flutter_todo_redux/redux/actions/user_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
+import 'package:flutter_todo_redux/widgets/ui_elements/loading_modal.dart';
+import 'package:flutter_todo_redux/widgets/todo/todo_editor.dart';
 
 class TodoEditorPage extends StatelessWidget {
   final String id;

@@ -2,9 +2,9 @@ import 'package:redux/redux.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:flutter_todo/models/app_state.dart';
-import 'package:flutter_todo/models/settings.dart';
-import 'package:flutter_todo/redux/actions/settings_actions.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/models/settings.dart';
+import 'package:flutter_todo_redux/redux/actions/settings_actions.dart';
 
 List<Middleware<AppState>> createSettingsMiddleware() {
   return [

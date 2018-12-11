@@ -4,11 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:flutter_todo/.env.dart';
-import 'package:flutter_todo/models/app_state.dart';
-import 'package:flutter_todo/models/user.dart';
-import 'package:flutter_todo/redux/actions/user_actions.dart';
-import 'package:flutter_todo/redux/actions/todos_actions.dart';
+import 'package:flutter_todo_redux/.env.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/models/user.dart';
+import 'package:flutter_todo_redux/redux/actions/user_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
 
 List<Middleware<AppState>> createUserMiddleware() {
   return [

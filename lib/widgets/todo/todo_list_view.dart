@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/widgets/helpers/message_dialog.dart';
-import 'package:flutter_todo/widgets/todo/todo_card.dart';
-import 'package:flutter_todo/typedefs.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
+import 'package:flutter_todo_redux/widgets/helpers/message_dialog.dart';
+import 'package:flutter_todo_redux/widgets/todo/todo_card.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
 
 class TodoListView extends StatefulWidget {
   final List<Todo> todos;

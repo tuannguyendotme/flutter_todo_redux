@@ -1,7 +1,7 @@
 import 'package:redux/redux.dart';
 
-import 'package:flutter_todo/redux/actions/todos_actions.dart';
-import 'package:flutter_todo/redux/actions/user_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/user_actions.dart';
 
 final loadingReducer = combineReducers<bool>([
   TypedReducer<bool, LoadTodosAction>(_setLoadingTrue),

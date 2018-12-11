@@ -1,16 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:flutter_todo/redux/actions/user_actions.dart';
-import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:redux/redux.dart';
 
-import 'package:flutter_todo/.env.dart';
-import 'package:flutter_todo/models/app_state.dart';
-import 'package:flutter_todo/models/user.dart';
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/redux/actions/todos_actions.dart';
+import 'package:flutter_todo_redux/.env.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/models/user.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
+import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
+import 'package:flutter_todo_redux/redux/actions/user_actions.dart';
+import 'package:flutter_todo_redux/widgets/helpers/priority_helper.dart';
 
 List<Middleware<AppState>> createTodosMiddleware() {
   return [

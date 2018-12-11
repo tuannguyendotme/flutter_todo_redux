@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_todo/models/priority.dart';
+import 'package:flutter_todo_redux/models/priority.dart';
 
 class Todo {
   final String id;

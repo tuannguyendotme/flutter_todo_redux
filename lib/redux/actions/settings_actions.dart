@@ -1,4 +1,4 @@
-import 'package:flutter_todo/models/settings.dart';
+import 'package:flutter_todo_redux/models/settings.dart';
 
 class LoadSettingsAction {}
 

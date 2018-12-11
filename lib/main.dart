@@ -4,22 +4,22 @@ import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:flutter_todo/.env.dart';
-import 'package:flutter_todo/app_builder.dart';
-import 'package:flutter_todo/models/app_state.dart';
-import 'package:flutter_todo/models/user.dart';
-import 'package:flutter_todo/models/settings.dart';
-import 'package:flutter_todo/models/filter.dart';
-import 'package:flutter_todo/redux/actions/todos_actions.dart';
-import 'package:flutter_todo/redux/reducers/app_reducer.dart';
-import 'package:flutter_todo/redux/middlewares/todos_middleware.dart';
-import 'package:flutter_todo/redux/middlewares/settings_middleware.dart';
-import 'package:flutter_todo/redux/middlewares/user_middleware.dart';
-import 'package:flutter_todo/pages/todo/todo_list_page.dart';
-import 'package:flutter_todo/pages/todo/todo_editor_page.dart';
-import 'package:flutter_todo/pages/settings/settings_page.dart';
-import 'package:flutter_todo/pages/auth/auth_page.dart';
-import 'package:flutter_todo/pages/register/register_page.dart';
+import 'package:flutter_todo_redux/.env.dart';
+import 'package:flutter_todo_redux/app_builder.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/models/user.dart';
+import 'package:flutter_todo_redux/models/settings.dart';
+import 'package:flutter_todo_redux/models/filter.dart';
+import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
+import 'package:flutter_todo_redux/redux/reducers/app_reducer.dart';
+import 'package:flutter_todo_redux/redux/middlewares/todos_middleware.dart';
+import 'package:flutter_todo_redux/redux/middlewares/settings_middleware.dart';
+import 'package:flutter_todo_redux/redux/middlewares/user_middleware.dart';
+import 'package:flutter_todo_redux/pages/todo/todo_list_page.dart';
+import 'package:flutter_todo_redux/pages/todo/todo_editor_page.dart';
+import 'package:flutter_todo_redux/pages/settings/settings_page.dart';
+import 'package:flutter_todo_redux/pages/auth/auth_page.dart';
+import 'package:flutter_todo_redux/pages/register/register_page.dart';
 
 void main() async {
   final User user = await _autoAuthenticate();

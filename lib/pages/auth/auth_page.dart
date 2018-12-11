@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_todo/typedefs.dart';
 
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:flutter_todo/models/app_state.dart';
-import 'package:flutter_todo/widgets/ui_elements/loading_modal.dart';
-import 'package:flutter_todo/widgets/auth/auth_form.dart';
-import 'package:flutter_todo/redux/actions/user_actions.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/widgets/ui_elements/loading_modal.dart';
+import 'package:flutter_todo_redux/widgets/auth/auth_form.dart';
+import 'package:flutter_todo_redux/redux/actions/user_actions.dart';
 
 class AuthPage extends StatelessWidget {
   @override

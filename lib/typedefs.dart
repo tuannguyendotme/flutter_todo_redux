@@ -1,6 +1,6 @@
-import 'package:flutter_todo/models/filter.dart';
-import 'package:flutter_todo/models/priority.dart';
-import 'package:flutter_todo/models/todo.dart';
+import 'package:flutter_todo_redux/models/filter.dart';
+import 'package:flutter_todo_redux/models/priority.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
 
 typedef OnPressed();
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_todo/models/priority.dart';
-import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
+import 'package:flutter_todo_redux/models/priority.dart';
+import 'package:flutter_todo_redux/widgets/helpers/priority_helper.dart';
 
 class PriorityFormField extends FormField<Priority> {
   PriorityFormField({

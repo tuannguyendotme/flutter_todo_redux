@@ -1,7 +1,7 @@
-import 'package:flutter_todo/redux/actions/filter_actions.dart';
 import 'package:redux/redux.dart';
 
-import 'package:flutter_todo/models/filter.dart';
+import 'package:flutter_todo_redux/models/filter.dart';
+import 'package:flutter_todo_redux/redux/actions/filter_actions.dart';
 
 final filterReducer = combineReducers<Filter>([
   TypedReducer<Filter, ApplyFilterAction>(_applyFilter),

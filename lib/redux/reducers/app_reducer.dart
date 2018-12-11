@@ -1,10 +1,9 @@
-import 'package:flutter_todo/models/app_state.dart';
-
-import 'package:flutter_todo/redux/reducers/loading_reducer.dart';
-import 'package:flutter_todo/redux/reducers/todos_reducer.dart';
-import 'package:flutter_todo/redux/reducers/settings_reducer.dart';
-import 'package:flutter_todo/redux/reducers/user_reducer.dart';
-import 'package:flutter_todo/redux/reducers/filter_reducer.dart';
+import 'package:flutter_todo_redux/models/app_state.dart';
+import 'package:flutter_todo_redux/redux/reducers/loading_reducer.dart';
+import 'package:flutter_todo_redux/redux/reducers/todos_reducer.dart';
+import 'package:flutter_todo_redux/redux/reducers/settings_reducer.dart';
+import 'package:flutter_todo_redux/redux/reducers/user_reducer.dart';
+import 'package:flutter_todo_redux/redux/reducers/filter_reducer.dart';
 
 AppState appReducer(AppState state, dynamic action) {
   return AppState(

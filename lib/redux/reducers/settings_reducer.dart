@@ -1,7 +1,7 @@
 import 'package:redux/redux.dart';
 
-import 'package:flutter_todo/models/settings.dart';
-import 'package:flutter_todo/redux/actions/settings_actions.dart';
+import 'package:flutter_todo_redux/models/settings.dart';
+import 'package:flutter_todo_redux/redux/actions/settings_actions.dart';
 
 final settingsReducer = combineReducers<Settings>([
   TypedReducer<Settings, SettingsLoadedAction>(

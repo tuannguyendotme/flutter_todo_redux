@@ -1,4 +1,4 @@
-import 'package:flutter_todo/models/filter.dart';
+import 'package:flutter_todo_redux/models/filter.dart';
 
 class ApplyFilterAction {
   final Filter filter;

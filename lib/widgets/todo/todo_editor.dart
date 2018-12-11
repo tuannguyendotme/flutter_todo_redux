@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_todo/.env.dart';
-import 'package:flutter_todo/models/todo.dart';
-import 'package:flutter_todo/models/priority.dart';
-import 'package:flutter_todo/models/user.dart';
-import 'package:flutter_todo/typedefs.dart';
-import 'package:flutter_todo/widgets/form_fields/priority_form_field.dart';
-import 'package:flutter_todo/widgets/form_fields/toggle_form_field.dart';
-import 'package:flutter_todo/widgets/helpers/confirm_dialog.dart';
-import 'package:flutter_todo/widgets/helpers/message_dialog.dart';
-import 'package:flutter_todo/widgets/helpers/priority_helper.dart';
+import 'package:flutter_todo_redux/.env.dart';
+import 'package:flutter_todo_redux/models/todo.dart';
+import 'package:flutter_todo_redux/models/priority.dart';
+import 'package:flutter_todo_redux/models/user.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
+import 'package:flutter_todo_redux/widgets/form_fields/priority_form_field.dart';
+import 'package:flutter_todo_redux/widgets/form_fields/toggle_form_field.dart';
+import 'package:flutter_todo_redux/widgets/helpers/confirm_dialog.dart';
+import 'package:flutter_todo_redux/widgets/helpers/message_dialog.dart';
+import 'package:flutter_todo_redux/widgets/helpers/priority_helper.dart';
 
 class TodoEditor extends StatefulWidget {
   final Todo todo;

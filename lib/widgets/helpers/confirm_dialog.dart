@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_todo/widgets/ui_elements/rounded_button.dart';
+import 'package:flutter_todo_redux/widgets/ui_elements/rounded_button.dart';
 
 class ConfirmDialog {
   static Future<bool> show(BuildContext context, [String title]) async {

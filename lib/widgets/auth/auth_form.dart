@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter_todo/.env.dart';
-import 'package:flutter_todo/typedefs.dart';
-import 'package:flutter_todo/widgets/helpers/message_dialog.dart';
-import 'package:flutter_todo/widgets/ui_elements/rounded_button.dart';
+import 'package:flutter_todo_redux/.env.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
+import 'package:flutter_todo_redux/widgets/helpers/message_dialog.dart';
+import 'package:flutter_todo_redux/widgets/ui_elements/rounded_button.dart';
 
 class AuthForm extends StatefulWidget {
   final OnAuthenticateUser onAuthenticate;

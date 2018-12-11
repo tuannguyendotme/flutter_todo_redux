@@ -1,5 +1,5 @@
-import 'package:flutter_todo/typedefs.dart';
-import 'package:flutter_todo/models/user.dart';
+import 'package:flutter_todo_redux/typedefs.dart';
+import 'package:flutter_todo_redux/models/user.dart';
 
 class UserAuthenticateAction {
   final String email;
