@@ -70,11 +70,17 @@ class _TodoEditorState extends State<TodoEditor> {
             return [
               PopupMenuItem<String>(
                 value: 'Settings',
-                child: Text('Settings'),
+                child: ListTile(
+                  leading: Icon(Icons.settings),
+                  title: Text('Settings'),
+                ),
               ),
               PopupMenuItem<String>(
                 value: 'LogOut',
-                child: Text('Log out'),
+                child: ListTile(
+                  leading: Icon(Icons.lock_outline),
+                  title: Text('Logout'),
+                ),
               ),
             ];
           },

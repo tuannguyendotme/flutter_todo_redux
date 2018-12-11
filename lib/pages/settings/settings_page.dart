@@ -46,7 +46,10 @@ class SettingsPage extends StatelessWidget {
             return [
               PopupMenuItem<String>(
                 value: 'LogOut',
-                child: Text('Log out'),
+                child: ListTile(
+                  leading: Icon(Icons.lock_outline),
+                  title: Text('Logout'),
+                ),
               ),
             ];
           },
