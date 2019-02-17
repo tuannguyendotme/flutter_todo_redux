@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import 'package:redux/redux.dart';
@@ -12,9 +14,7 @@ import 'package:flutter_todo_redux/models/settings.dart';
 import 'package:flutter_todo_redux/models/filter.dart';
 import 'package:flutter_todo_redux/redux/actions/todos_actions.dart';
 import 'package:flutter_todo_redux/redux/reducers/app_reducer.dart';
-import 'package:flutter_todo_redux/redux/middlewares/todos_middleware.dart';
-import 'package:flutter_todo_redux/redux/middlewares/settings_middleware.dart';
-import 'package:flutter_todo_redux/redux/middlewares/user_middleware.dart';
+import 'package:flutter_todo_redux/redux/middlewares/middlewares.dart';
 import 'package:flutter_todo_redux/pages/todo/todo_list_page.dart';
 import 'package:flutter_todo_redux/pages/todo/todo_editor_page.dart';
 import 'package:flutter_todo_redux/pages/settings/settings_page.dart';
