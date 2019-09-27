@@ -53,6 +53,8 @@ class _RegisterFormState extends State<RegisterForm> {
                 .hasMatch(value)) {
           return 'Please enter a valid email';
         }
+
+        return null;
       },
       onSaved: (value) {
         _formData['email'] = value;
@@ -68,6 +70,8 @@ class _RegisterFormState extends State<RegisterForm> {
         if (value != _passwordController.value.text) {
           return 'Password and confirm password are not match';
         }
+
+        return null;
       },
     );
   }
@@ -81,6 +85,8 @@ class _RegisterFormState extends State<RegisterForm> {
         if (value.isEmpty || value.length < 6) {
           return 'Please enter valid password';
         }
+
+        return null;
       },
       onSaved: (value) {
         _formData['password'] = value;

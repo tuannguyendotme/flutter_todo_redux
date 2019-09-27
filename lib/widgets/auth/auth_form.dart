@@ -81,6 +81,8 @@ class _AuthFormState extends State<AuthForm> {
                 .hasMatch(value)) {
           return 'Please enter a valid email';
         }
+
+        return null;
       },
       onSaved: (value) {
         _formData['email'] = value;
@@ -96,6 +98,8 @@ class _AuthFormState extends State<AuthForm> {
         if (value.isEmpty) {
           return 'Please enter password';
         }
+
+        return null;
       },
       onSaved: (value) {
         _formData['password'] = value;
