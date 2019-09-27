@@ -21,11 +21,10 @@ List<Middleware<AppState>> createSettingsMiddleware() {
 Future _loadSettings(Store<AppState> store, LoadSettingsAction action,
     NextDispatcher next) async {
   final prefs = await SharedPreferences.getInstance();
-  final isDarkThemeUsed = _loadIsDarkThemeUsed(prefs);
 
   final Settings settings = Settings(
     isShortcutsEnabled: _loadIsShortcutsEnabled(prefs),
-    isDarkThemeUsed: isDarkThemeUsed,
+    isDarkThemeUsed: _loadIsDarkThemeUsed(prefs),
   );
 
   store.dispatch(SettingsLoadedAction(settings));
@@ -46,8 +45,7 @@ Future _toggleShortcutsEnabledSetting(Store<AppState> store,
 Future _toggleDarkThemeUsedSetting(Store<AppState> store,
     ToggleDarkThemeUsedSettingAction action, NextDispatcher next) async {
   final prefs = await SharedPreferences.getInstance();
-  final isDarkThemeUsed = !_loadIsDarkThemeUsed(prefs);
-  prefs.setBool('isDarkThemeUsed', isDarkThemeUsed);
+  prefs.setBool('isDarkThemeUsed', !_loadIsDarkThemeUsed(prefs));
 
   store.dispatch(DarkThemeUsedSettingToggledAction());
 

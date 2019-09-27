@@ -107,6 +107,7 @@ class _TodoAppState extends State<TodoApp> {
                   ? Brightness.dark
                   : Brightness.light,
             ),
+            initialRoute: '/',
             routes: {
               '/': (BuildContext context) => StoreBuilder<AppState>(
                     onInit: (Store store) {
